@@ -1,0 +1,13 @@
+package com.fallensakura.p01server;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class P01ServerApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}
