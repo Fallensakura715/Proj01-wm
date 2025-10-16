@@ -11,6 +11,7 @@
     <groupId>com.fallensakura</groupId>
     <artifactId>proj01-wm</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>proj01-wm</name>
     <description>proj01-wm</description>
     <url/>
@@ -63,6 +64,16 @@
             <artifactId>mybatis-spring-boot-starter-test</artifactId>
             <version>3.0.5</version>
             <scope>test</scope>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>com.github.xiaoymin</groupId>-->
+<!--            <artifactId>knife4j-spring-boot-starter</artifactId>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.8.13</version>
         </dependency>
     </dependencies>
 
