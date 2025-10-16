@@ -7,7 +7,6 @@ import java.util.Map;
 
 public class CodeGenerator {
     public static void main(String[] args) {
-        final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
         final String JDBC_URL = "jdbc:mysql://localhost:3306/proj01?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8";
         final String JDBC_USERNAME = "root";
         final String JDBC_PASSWORD = "password";
