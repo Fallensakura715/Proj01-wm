@@ -1,8 +1,5 @@
 package com.fallensakura.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.fallensakura.entity.Address;
-
 /**
  * <p>
  *  Mapper 接口
@@ -11,6 +8,6 @@ import com.fallensakura.entity.Address;
  * @author Fallensakura
  * @since 2025-10-16
  */
-public interface AddressMapper extends BaseMapper<Address> {
+public interface AddressMapper {
 
 }
