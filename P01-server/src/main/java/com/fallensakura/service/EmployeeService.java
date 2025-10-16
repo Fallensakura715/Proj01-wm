@@ -1,7 +1,7 @@
 package com.fallensakura.service;
 
-import com.fallensakura.p01pojo.dto.EmployeeLoginDTO;
-import com.fallensakura.p01pojo.entity.Employee;
+import com.fallensakura.dto.EmployeeLoginDTO;
+import com.fallensakura.entity.Employee;
 
 public interface EmployeeService {
 
