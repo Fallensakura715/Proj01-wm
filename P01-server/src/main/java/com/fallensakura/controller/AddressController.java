@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-10-16
  */
 @RestController
-@RequestMapping("/address")
+@RequestMapping("/admin/address")
 public class AddressController {
 
 }

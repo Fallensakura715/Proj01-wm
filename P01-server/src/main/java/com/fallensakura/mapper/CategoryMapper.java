@@ -1,5 +1,8 @@
 package com.fallensakura.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.fallensakura.entity.Category;
+
 /**
  * <p>
  *  Mapper 接口
@@ -8,6 +11,6 @@ package com.fallensakura.mapper;
  * @author Fallensakura
  * @since 2025-10-16
  */
-public interface CategoryMapper {
+public interface CategoryMapper extends BaseMapper<Category> {
 
 }

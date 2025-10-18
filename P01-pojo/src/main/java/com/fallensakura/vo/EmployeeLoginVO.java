@@ -14,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "员工登录VO")
-public class EmployeeVO implements Serializable {
+public class EmployeeLoginVO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
