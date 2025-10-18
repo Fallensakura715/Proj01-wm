@@ -1,4 +1,4 @@
-package com.fallensakura.p01common.constant;
+package com.fallensakura.constant;
 
 public class StatusConstant {
     public static final int ENABLE = 1;

@@ -3,6 +3,7 @@ package com.fallensakura.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,9 +22,7 @@ import java.time.LocalDateTime;
  * @author Fallensakura
  * @since 2025-10-16
  */
-@Getter
-@Setter
-@ToString
+@Data
 @Accessors(chain = true)
 @Schema(name = "Setmeal", description = "")
 public class Setmeal implements Serializable {

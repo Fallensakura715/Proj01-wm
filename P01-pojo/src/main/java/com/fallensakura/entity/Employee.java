@@ -3,9 +3,7 @@ package com.fallensakura.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serial;
@@ -20,11 +18,9 @@ import java.time.LocalDateTime;
  * @author Fallensakura
  * @since 2025-10-16
  */
-@Getter
-@Setter
-@ToString
+@Data
 @Accessors(chain = true)
-@Schema(name = "Employee", description = "")
+@Schema(name = "Employee", description = "员工实体类")
 public class Employee implements Serializable {
 
     @Serial
@@ -53,7 +49,7 @@ public class Employee implements Serializable {
      * 1正常 0锁定
      */
     @Schema(description = "1正常 0锁定")
-    private Byte status;
+    private Integer status;
 
     /**
      * 创建时间

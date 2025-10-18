@@ -14,7 +14,6 @@ public class CodeGenerator {
         String projPath = System.getProperty("user.dir");
         String pojoPath = projPath + "/P01-pojo";
         String serverPath = projPath + "/P01-server";
-        String commonPath = projPath + "/P01-common";
 
         Map<OutputFile, String> pathInfo = new HashMap<>();
 
