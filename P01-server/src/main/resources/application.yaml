@@ -6,3 +6,17 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: password
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+
+fallensakura:
+  jwt:
+    admin-secret-key: this_is_fallensakura's_secret_key
+    admin-token-name: Authorization
+    expiration-time: 7200000

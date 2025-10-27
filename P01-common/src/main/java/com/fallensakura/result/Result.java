@@ -14,8 +14,10 @@ public class Result<T> implements Serializable {
 
     @Schema(description = "状态码")
     private Integer code;
+
     @Schema(description = "返回消息")
     private String msg;
+
     @Schema(description = "返回数据")
     private T data;
 
@@ -35,6 +37,13 @@ public class Result<T> implements Serializable {
     public static <T> Result<T> error() {
         Result<T> result = new Result<>();
         result.code = 0;
+        return result;
+    }
+
+    public static <T> Result<T> error(String message) {
+        Result<T> result = new Result<>();
+        result.code = 0;
+        result.setMsg(message);
         return result;
     }
 }

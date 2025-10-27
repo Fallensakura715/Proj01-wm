@@ -1,6 +1,7 @@
 package com.fallensakura.service;
 
 import com.fallensakura.dto.EditPasswordDTO;
+import com.fallensakura.dto.EmployeeDTO;
 import com.fallensakura.dto.EmployeeLoginDTO;
 import com.fallensakura.dto.EmployeePageQueryDTO;
 import com.fallensakura.entity.Employee;
@@ -24,7 +25,7 @@ public interface EmployeeService {
     /**
      * 启用禁用员工账号
      * @param id 员工ID
-     * @param status 状态，1为启用，0为禁用
+     * @param status 1为启用，0为禁用
      */
     void updateStatus(Integer status, Long id);
 
@@ -35,4 +36,9 @@ public interface EmployeeService {
      */
     PageResult<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
 
+    /**
+     * 增加员工
+     * @param employeeDTO
+     */
+    void addEmployee(EmployeeDTO employeeDTO);
 }
