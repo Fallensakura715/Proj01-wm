@@ -1,30 +1,62 @@
 package com.fallensakura.config;
 
-import com.fallensakura.interceptor.LoginCheckInterceptor;
+import com.fallensakura.interceptor.JwtTokenInterceptor;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.TimeZone;
 
 @Configuration
 @Slf4j
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
-    LoginCheckInterceptor loginCheckInterceptor;
+    JwtTokenInterceptor loginCheckInterceptor;
+
+    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginCheckInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/admin/employee/login");
+                .excludePathPatterns(
+                        "/admin/employee/login",
+                        "/v3/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/swagger-resources/**",
+                        "/webjars/**"
+                );
     }
 
+    @Bean
+    public Jackson2ObjectMapperBuilderCustomizer jacksonCustomizer() {
+        return builder -> {
+            builder.simpleDateFormat(DATE_TIME_FORMAT);
+            builder.timeZone(TimeZone.getTimeZone("GMT+8"));
+            builder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        };
+    }
 
+//    @Override
+//    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        log.info("扩展消息转换器...");
+//        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+//        converter.setObjectMapper(Jackson2ObjectMapperBuilder.json()
+//                .simpleDateFormat(DATE_TIME_FORMAT)
+//                .timeZone(TimeZone.getTimeZone("GMT+8"))
+//                .build());
+//
+//        converters.addLast(converter);
+//    }
 
-//    /**
+    //    /**
 //     * 通过knife4j生成接口文档
 //     * @return docket
 //     */

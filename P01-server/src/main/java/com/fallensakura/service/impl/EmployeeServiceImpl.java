@@ -1,7 +1,11 @@
 package com.fallensakura.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.fallensakura.constant.PasswordConstant;
 import com.fallensakura.constant.StatusConstant;
+import com.fallensakura.context.BaseContext;
 import com.fallensakura.dto.EditPasswordDTO;
+import com.fallensakura.dto.EmployeeDTO;
 import com.fallensakura.dto.EmployeeLoginDTO;
 import com.fallensakura.dto.EmployeePageQueryDTO;
 import com.fallensakura.entity.Employee;
@@ -11,14 +15,19 @@ import com.fallensakura.exception.PasswordErrorException;
 import com.fallensakura.mapper.EmployeeMapper;
 import com.fallensakura.result.PageResult;
 import com.fallensakura.service.EmployeeService;
+import com.fallensakura.util.PasswordUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
+
+import java.time.LocalDateTime;
 
 /**
  * <p>
- *  服务实现类
+ *  Employee服务实现类
  * </p>
  *
  * @author Fallensakura
@@ -58,7 +67,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee employee = getEmployeeById(editPasswordDTO.getEmployeeId());
 
-        if (!oldPassword.equals(employee.getPassword())) {
+        if (!PasswordUtil.matches(oldPassword, employee.getPassword())) {
+            log.info("Wrong password: {}", employee.getPassword());
             throw new PasswordErrorException();
         }
 
@@ -84,8 +94,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public PageResult<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
-
+        LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
         return null;
+    }
+
+    @Override
+    public void addEmployee(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO, employee);
+        employee.setStatus(StatusConstant.ENABLE);
+        employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setCreateUser(BaseContext.getCurrentId());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.insert(employee);
+        log.info("User added: {}", employee.getUsername());
     }
 
     private Employee getEmployeeById(Long id) {
@@ -103,4 +127,5 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         return employee;
     }
+
 }

@@ -2,22 +2,18 @@ package com.fallensakura.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class JwtUtil {
-    private static final String SECRET_KEY = "this_is_fallensakura's_secret_key";
-    private static final long EXPIREATON_TIME = 2 * 60 * 60 * 1000;
 
-    private static SecretKey getSecretKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+    private static SecretKey getSecretKey(String secretKey) {
+        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -25,7 +21,7 @@ public class JwtUtil {
      * @param employeeId
      * @return JwtToken
      */
-    public static String generateToken(Long employeeId) {
+    public static String generateToken(Long employeeId, String secretKey, Long expirationTime) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("employeeId", employeeId);
 
@@ -33,20 +29,28 @@ public class JwtUtil {
                 .claims(claims)
                 .subject("employee_auth")
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + EXPIREATON_TIME))
-                .signWith(getSecretKey(), Jwts.SIG.HS256)
+                .expiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(getSecretKey(secretKey), Jwts.SIG.HS256)
                 .compact();
     }
 
     /**
-     * 验证JwtToken
-     * @param key
+     * 根据JWT令牌获取员工ID
      * @param token
      * @return
      */
-    public static Claims praseToken(Key key, String token) {
+    public static Long getEmployeeId(String token, String secretKey) {
+        return praseToken(token, secretKey).get("employeeId", Long.class);
+    }
+
+    /**
+     * 验证JwtToken
+     * @param token
+     * @return
+     */
+    public static Claims praseToken(String token, String secretKey) {
         return Jwts.parser()
-                .verifyWith(getSecretKey())
+                .verifyWith(getSecretKey(secretKey))
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
