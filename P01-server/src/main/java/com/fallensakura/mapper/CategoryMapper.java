@@ -2,6 +2,7 @@ package com.fallensakura.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fallensakura.entity.Category;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.fallensakura.entity.Category;
  * @author Fallensakura
  * @since 2025-10-16
  */
+@Mapper
 public interface CategoryMapper extends BaseMapper<Category> {
 
 }

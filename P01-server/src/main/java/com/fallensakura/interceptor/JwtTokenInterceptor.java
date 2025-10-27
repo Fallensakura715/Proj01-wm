@@ -20,36 +20,36 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
     @Autowired
     JwtProperties jwtProperties;
 
-    @Override
-    public boolean preHandle(HttpServletRequest request,
-                             HttpServletResponse response,
-                             Object handler) {
-
-        if (!(handler instanceof HandlerMethod)) {
-            return true;
-        }
-
-        String token = request.getHeader(jwtProperties.getAdminTokenName());
-
-        if (!StringUtils.hasText(token) || !token.startsWith("Bearer ")) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return false;
-        }
-
-        token = token.substring(7);
-
-        try {
-            log.info("Parsing JWT Token: {}", token);
-            Long id = JwtUtil.praseToken(token, jwtProperties.getAdminSecretKey())
-                            .get(JwtClaimsConstant.EMPLOYEE_ID, Long.class);
-
-            log.info("Token parse success: {}", id);
-            BaseContext.setCurrentId(id);
-            return true;
-        } catch (Exception e) {
-            log.error("Token parse failed: {}", e.getMessage());
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return false;
-        }
-    }
+//    @Override
+//    public boolean preHandle(HttpServletRequest request,
+//                             HttpServletResponse response,
+//                             Object handler) {
+//
+//        if (!(handler instanceof HandlerMethod)) {
+//            return true;
+//        }
+//
+//        String token = request.getHeader(jwtProperties.getAdminTokenName());
+//
+//        if (!StringUtils.hasText(token) || !token.startsWith("Bearer ")) {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            return false;
+//        }
+//
+//        token = token.substring(7);
+//
+//        try {
+//            log.info("Parsing JWT Token: {}", token);
+//            Long id = JwtUtil.praseToken(token, jwtProperties.getAdminSecretKey())
+//                            .get(JwtClaimsConstant.EMPLOYEE_ID, Long.class);
+//
+//            log.info("Token parse success: {}", id);
+//            BaseContext.setCurrentId(id);
+//            return true;
+//        } catch (Exception e) {
+//            log.error("Token parse failed: {}", e.getMessage());
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            return false;
+//        }
+//    }
 }
