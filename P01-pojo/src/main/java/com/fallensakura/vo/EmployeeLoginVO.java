@@ -21,12 +21,12 @@ public class EmployeeLoginVO implements Serializable {
     @Schema(description = "员工id")
     private Long id;
 
-    @Schema(description = "用户名")
-    private String username;
-
-    @Schema(description = "密码")
-    private String password;
+    @Schema(description = "姓名")
+    private String name;
 
     @Schema(description = "JWT令牌")
     private String token;
+
+    @Schema(description = "用户名")
+    private String username;
 }

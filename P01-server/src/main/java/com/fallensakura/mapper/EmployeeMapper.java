@@ -18,6 +18,6 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface EmployeeMapper extends BaseMapper<Employee> {
 
-    @Select("select * from user where username = #{username}")
+    @Select("select * from employee where username = #{username}")
     Employee selectByUsername(@Param("username") String username);
 }

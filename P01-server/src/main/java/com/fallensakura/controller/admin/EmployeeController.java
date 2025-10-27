@@ -1,5 +1,6 @@
 package com.fallensakura.controller.admin;
 
+import com.fallensakura.context.BaseContext;
 import com.fallensakura.properties.JwtProperties;
 import com.fallensakura.dto.EditPasswordDTO;
 import com.fallensakura.dto.EmployeeDTO;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/admin/employee")
 @Slf4j
-@Tag(name = "员工管理")
+@Tag(name = "员工接口")
 public class EmployeeController {
 
     @Autowired
@@ -30,58 +31,68 @@ public class EmployeeController {
     JwtProperties jwtProperties;
 
     @PostMapping("/login")
-    @Operation(description = "员工登录")
+    @Operation(summary = "员工登录")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
-
         Employee employee = employeeService.login(employeeLoginDTO);
-
         String token = JwtUtil.generateToken(
                 employee.getId(),
                 jwtProperties.getAdminSecretKey(),
                 jwtProperties.getExpirationTime()
         );
-
         EmployeeLoginVO vo = EmployeeLoginVO.builder()
                 .id(employee.getId())
                 .username(employee.getUsername())
-                .password(employee.getPassword())
+                .name(employee.getName())
                 .token(token)
                 .build();
-
         return Result.success(vo);
     }
 
     @PostMapping("/logout")
-    @Operation(description = "员工登出")
+    @Operation(summary = "员工登出")
     public Result<?> logout() {
+        BaseContext.clear();
         return Result.success();
     }
 
     @PutMapping("/editPassword")
-    @Operation(description = "修改员工密码")
+    @Operation(summary = "修改员工密码")
     public Result<?> editPassword(@RequestBody EditPasswordDTO editPasswordDTO) {
         employeeService.editPassword(editPasswordDTO);
         return Result.success();
     }
 
     @PostMapping("/status/{status}")
-    @Operation(description = "启用、禁用员工账号")
+    @Operation(summary = "启用、禁用员工账号")
     public Result<?> updateStatus(@PathVariable Integer status, @RequestParam Long id) {
         employeeService.updateStatus(status, id);
         return Result.success();
     }
 
     @GetMapping("/page")
-    @Operation(description = "员工分页查询")
+    @Operation(summary = "员工分页查询")
     public Result<PageResult<Employee>> pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
         PageResult<Employee> page = employeeService.pageQuery(employeePageQueryDTO);
         return Result.success(page);
     }
 
-    @PostMapping("/employee")
-    @Operation(description = "新增员工")
+    @PostMapping("/")
+    @Operation(summary = "新增员工")
     public Result<?> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
         employeeService.addEmployee(employeeDTO);
+        return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "根据ID查询员工")
+    public Result<Employee> selectById(@PathVariable Long id) {
+        return Result.success(employeeService.selectById(id));
+    }
+
+    @PutMapping("/")
+    @Operation(summary = "编辑员工信息")
+    public Result<?> editEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        employeeService.update(employeeDTO);
         return Result.success();
     }
 }

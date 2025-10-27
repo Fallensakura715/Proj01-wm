@@ -1,6 +1,8 @@
 package com.fallensakura.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fallensakura.constant.PasswordConstant;
 import com.fallensakura.constant.StatusConstant;
 import com.fallensakura.context.BaseContext;
@@ -48,7 +50,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee employee = getEmployeeByUsername(username);
 
-        if (!password.equals(employee.getPassword())) {
+        if (!PasswordUtil.matches(password, employee.getPassword())) {
             throw new PasswordErrorException();
         }
 
@@ -68,11 +70,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = getEmployeeById(editPasswordDTO.getEmployeeId());
 
         if (!PasswordUtil.matches(oldPassword, employee.getPassword())) {
-            log.info("Wrong password: {}", employee.getPassword());
+            log.info("Wrong password: {}", oldPassword);
+            log.info("::{}", DigestUtils.md5DigestAsHex(employee.getPassword().getBytes()));
             throw new PasswordErrorException();
         }
 
-        employee.setPassword(newPassword);
+        employee.setPassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()));
         employeeMapper.updateById(employee);
     }
 
@@ -80,6 +83,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void updateStatus(Integer status, Long id) {
         Employee employee = getEmployeeById(id);
+
         if (employee.getStatus() == StatusConstant.DISABLE) {
             throw new AccountLockedException();
         }
@@ -94,8 +98,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public PageResult<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        Page<Employee> page = new Page<>(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
         LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
-        return null;
+
+        wrapper.like(StringUtils.isNotBlank(employeePageQueryDTO.getName()),
+                Employee::getName, employeePageQueryDTO.getName());
+
+        Page<Employee> employeePage = employeeMapper.selectPage(page, wrapper);
+
+        return new PageResult<>(employeePage.getTotal(), employeePage.getRecords());
     }
 
     @Override
@@ -112,7 +123,27 @@ public class EmployeeServiceImpl implements EmployeeService {
         log.info("User added: {}", employee.getUsername());
     }
 
+    @Override
+    public Employee selectById(Long id) {
+        return getEmployeeById(id);
+    }
+
+    @Override
+    public void update(EmployeeDTO employeeDTO) {
+        Employee employee = selectById(employeeDTO.getId());
+
+        BeanUtils.copyProperties(employeeDTO, employee);
+
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employee.setUpdateTime(LocalDateTime.now());
+
+        employeeMapper.updateById(employee);
+    }
+
     private Employee getEmployeeById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException();
+        }
         Employee employee = employeeMapper.selectById(id);
         if (employee == null) {
             throw new AccountNotFoundException();

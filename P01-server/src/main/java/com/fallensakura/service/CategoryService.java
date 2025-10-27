@@ -1,5 +1,7 @@
 package com.fallensakura.service;
 
+import com.fallensakura.dto.CategoryDTO;
+
 /**
  * <p>
  *  服务类
@@ -10,4 +12,9 @@ package com.fallensakura.service;
  */
 public interface CategoryService {
 
+    /**
+     * 修改分类
+     * @param categoryDTO
+     */
+    void update(CategoryDTO categoryDTO);
 }

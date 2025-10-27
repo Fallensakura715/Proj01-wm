@@ -1,6 +1,7 @@
 package com.fallensakura.handler;
 
 import com.fallensakura.constant.MessageConstant;
+import com.fallensakura.exception.AccountNotFoundException;
 import com.fallensakura.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,5 +23,10 @@ public class GlobalExceptionHandler {
             return Result.error(msg);
         }
         return Result.error(exception.getMessage());
+    }
+
+    @ExceptionHandler(AccountNotFoundException.class)
+    public Result<?> handleAccountNotFound(AccountNotFoundException e) {
+        return Result.error(e.getMessage());
     }
 }
