@@ -1,5 +1,7 @@
 package com.fallensakura.controller.admin;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/setmeal")
+@Slf4j
+@Tag(name = "套餐接口")
 public class SetmealController {
 
 }

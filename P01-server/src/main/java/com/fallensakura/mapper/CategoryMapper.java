@@ -3,6 +3,9 @@ package com.fallensakura.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fallensakura.entity.Category;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +18,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface CategoryMapper extends BaseMapper<Category> {
 
+    @Select("select * from category where type = #{type}")
+    List<Category> selectByType(Integer type);
 }

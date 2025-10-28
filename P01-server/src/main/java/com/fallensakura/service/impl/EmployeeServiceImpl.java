@@ -82,17 +82,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     @Override
     public void updateStatus(Integer status, Long id) {
-        Employee employee = getEmployeeById(id);
-
-        if (employee.getStatus() == StatusConstant.DISABLE) {
-            throw new AccountLockedException();
-        }
-
         if (!status.equals(StatusConstant.ENABLE) && !status.equals(StatusConstant.DISABLE)) {
             throw new IllegalArgumentException("状态值错误");
         }
 
-        employee.setStatus(status);
+        Employee employee = Employee.builder()
+                .status(status)
+                .id(id)
+                .build();
         employeeMapper.updateById(employee);
     }
 
@@ -102,13 +99,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
 
         wrapper.like(StringUtils.isNotBlank(employeePageQueryDTO.getName()),
-                Employee::getName, employeePageQueryDTO.getName());
+                Employee::getName, employeePageQueryDTO.getName())
+                .orderByDesc(Employee::getCreateTime);
 
         Page<Employee> employeePage = employeeMapper.selectPage(page, wrapper);
 
         return new PageResult<>(employeePage.getTotal(), employeePage.getRecords());
     }
 
+    @Transactional
     @Override
     public void addEmployee(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
@@ -120,18 +119,19 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setCreateUser(BaseContext.getCurrentId());
         employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.insert(employee);
-        log.info("User added: {}", employee.getUsername());
     }
 
     @Override
     public Employee selectById(Long id) {
-        return getEmployeeById(id);
+        Employee employee = getEmployeeById(id);
+        employee.setPassword("****");
+        return employee;
     }
 
+    @Transactional
     @Override
     public void update(EmployeeDTO employeeDTO) {
         Employee employee = selectById(employeeDTO.getId());
-
         BeanUtils.copyProperties(employeeDTO, employee);
 
         employee.setUpdateUser(BaseContext.getCurrentId());

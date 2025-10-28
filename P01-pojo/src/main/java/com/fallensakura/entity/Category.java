@@ -3,10 +3,7 @@ package com.fallensakura.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serial;
@@ -22,6 +19,9 @@ import java.time.LocalDateTime;
  * @since 2025-10-16
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
 @Schema(name = "Category", description = "")
 public class Category implements Serializable {
@@ -38,13 +38,13 @@ public class Category implements Serializable {
      * 1菜品分类  2套餐分类
      */
     @Schema(description = "1菜品分类  2套餐分类")
-    private Byte type;
+    private Integer type;
 
     /**
      * 1启用 0禁用
      */
     @Schema(description = "1启用 0禁用")
-    private Byte status;
+    private Integer status;
 
     private Integer sort;
 

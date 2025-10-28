@@ -35,6 +35,8 @@ public class Dish implements Serializable {
 
     private String name;
 
+    private Long categoryId;
+
     private BigDecimal price;
 
     /**

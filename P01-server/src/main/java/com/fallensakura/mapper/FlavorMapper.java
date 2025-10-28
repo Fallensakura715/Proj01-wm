@@ -1,5 +1,7 @@
 package com.fallensakura.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
+
 /**
  * <p>
  *  Mapper 接口
@@ -8,6 +10,7 @@ package com.fallensakura.mapper;
  * @author Fallensakura
  * @since 2025-10-16
  */
+@Mapper
 public interface FlavorMapper {
 
 }
