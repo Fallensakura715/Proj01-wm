@@ -76,7 +76,7 @@ public class EmployeeController {
         return Result.success(page);
     }
 
-    @PostMapping("/")
+    @PostMapping
     @Operation(summary = "新增员工")
     public Result<?> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
         employeeService.addEmployee(employeeDTO);
@@ -89,7 +89,7 @@ public class EmployeeController {
         return Result.success(employeeService.selectById(id));
     }
 
-    @PutMapping("/")
+    @PutMapping
     @Operation(summary = "编辑员工信息")
     public Result<?> editEmployee(@RequestBody EmployeeDTO employeeDTO) {
         employeeService.update(employeeDTO);

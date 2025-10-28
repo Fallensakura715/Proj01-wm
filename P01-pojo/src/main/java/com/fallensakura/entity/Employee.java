@@ -3,7 +3,10 @@ package com.fallensakura.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serial;
@@ -19,6 +22,9 @@ import java.time.LocalDateTime;
  * @since 2025-10-16
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
 @Schema(name = "Employee", description = "员工实体类")
 public class Employee implements Serializable {

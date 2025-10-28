@@ -2,6 +2,7 @@ package com.fallensakura.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fallensakura.entity.Dish;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,5 +12,6 @@ import com.fallensakura.entity.Dish;
  * @author Fallensakura
  * @since 2025-10-16
  */
+@Mapper
 public interface DishMapper extends BaseMapper<Dish> {
 }
