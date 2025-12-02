@@ -1,13 +1,16 @@
 package com.fallensakura.config;
 
-import com.fallensakura.interceptor.JwtTokenInterceptor;
+import com.fallensakura.interceptor.JwtTokenAdminInterceptor;
+import com.fallensakura.properties.FileUploadProperties;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.TimeZone;
@@ -17,22 +20,33 @@ import java.util.TimeZone;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
-    JwtTokenInterceptor loginCheckInterceptor;
+    JwtTokenAdminInterceptor loginCheckInterceptor;
 
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginCheckInterceptor)
-                .addPathPatterns("/**")
+                .addPathPatterns("/admin/**")
                 .excludePathPatterns(
                         "/admin/employee/login",
+                        "/admin/common/upload",
                         "/v3/**",
                         "/swagger-ui/**",
                         "/swagger-ui.html",
                         "/swagger-resources/**",
                         "/webjars/**"
                 );
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOriginPatterns("*")
+                .allowCredentials(true)
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .maxAge(3600);
     }
 
     @Bean
