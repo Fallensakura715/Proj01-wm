@@ -15,7 +15,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler
-    public Result<?> exceptionHandler(SQLIntegrityConstraintViolationException exception) {
+    public Result<String> exceptionHandler(SQLIntegrityConstraintViolationException exception) {
         String message = exception.getMessage();
         if (message.contains("Duplicate entry")) {
             String[] split = message.split(" ");
@@ -27,12 +27,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AccountNotFoundException.class)
-    public Result<?> handleAccountNotFound(AccountNotFoundException e) {
+    public Result<String> handleAccountNotFound(AccountNotFoundException e) {
         return Result.error(e.getMessage());
     }
 
     @ExceptionHandler(BusinessException.class)
-    public Result<?> handleBusinessException(BusinessException e) {
+    public Result<String> handleBusinessException(BusinessException e) {
+        return Result.error(e.getMessage());
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public Result<String> handleIllegalArgumentException(IllegalArgumentException e) {
         return Result.error(e.getMessage());
     }
 }

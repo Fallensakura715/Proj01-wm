@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fallensakura.mapper.CategoryMapper">
+    <update id="update">
+        UPDATE category
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
 
+    <select id="selectPage" resultType="com.fallensakura.entity.Category">
+        select
+        c.id,
+        c.name,
+        c.type,
+        c.status,
+        c.sort,
+        c.create_time,
+        c.update_time,
+        c.create_user,
+        c.update_user
+        from category c
+        <where>
+            <if test="dto.name != null and dto.name != ''">
+                and c.name LIKE CONCAT('%', #{dto.name}, '%')
+            </if>
+            <if test="dto.type != null">
+                and c.type = #{dto.type}
+            </if>
+        </where>
+        order by c.update_time desc
+    </select>
 </mapper>

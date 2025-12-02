@@ -14,17 +14,13 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "员工分页查询DTO")
 public class EmployeePageQueryDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "姓名")
     private String name;
 
-    @Schema(description = "页数")
     private int page;
 
-    @Schema(description = "每页大小")
     private int pageSize;
 }

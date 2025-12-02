@@ -1,23 +1,22 @@
 package com.fallensakura.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 
 @Data
-public class CategoryPageQueryDTO implements Serializable {
+public class SetmealPageQueryDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+
+    private Long categoryId;
 
     private String name;
 
     private Integer page;
 
-    //每页记录数
     private Integer pageSize;
 
-    //1为菜品分类，2为套餐分类
-    private Integer type;
+    private Integer status;
 }

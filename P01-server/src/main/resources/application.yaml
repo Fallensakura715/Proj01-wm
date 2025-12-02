@@ -6,6 +6,17 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: password
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 10MB
+      file-size-threshold: 0B
 
 mybatis:
   configuration:
@@ -18,5 +29,14 @@ mybatis-plus:
 fallensakura:
   jwt:
     admin-secret-key: this_is_fallensakura's_secret_key
-    admin-token-name: Authorization
+    admin-token-name: token
     expiration-time: 7200000
+
+cloudflare:
+  r2:
+    endpoint: https://72f9a9c523549dfdbaba24366870d8fa.r2.cloudflarestorage.com/
+    access-key: ac95cf16560abb9fcffdd6fec1a42e01
+    secret-key: cb17fbe36c17329e0337ccaef29b5c45a0ee273b36ef4e38992c63eb25aeb536
+    bucket-name: imagestorage
+    region: auto
+    public-url: https://imgu.falnsakura.top/

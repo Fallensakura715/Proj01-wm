@@ -3,10 +3,7 @@ package com.fallensakura.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serial;
@@ -24,7 +21,9 @@ import java.time.LocalDateTime;
  */
 @Data
 @Accessors(chain = true)
-@Schema(name = "Setmeal", description = "")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Setmeal implements Serializable {
 
     @Serial
@@ -46,8 +45,7 @@ public class Setmeal implements Serializable {
     /**
      * 1起售 0停售
      */
-    @Schema(description = "1起售 0停售")
-    private Byte status;
+    private Integer status;
 
     private LocalDateTime createTime;
 

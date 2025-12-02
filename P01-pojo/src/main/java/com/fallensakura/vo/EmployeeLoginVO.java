@@ -11,8 +11,6 @@ import java.io.Serializable;
 
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Schema(description = "员工登录VO")
 public class EmployeeLoginVO implements Serializable {
     @Serial

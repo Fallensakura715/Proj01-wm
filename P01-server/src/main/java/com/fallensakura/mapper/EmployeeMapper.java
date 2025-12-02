@@ -1,7 +1,9 @@
 package com.fallensakura.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.fallensakura.annotation.AutoFill;
 import com.fallensakura.entity.Employee;
+import com.fallensakura.enumeration.OperationType;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -20,4 +22,15 @@ public interface EmployeeMapper extends BaseMapper<Employee> {
 
     @Select("select * from employee where username = #{username}")
     Employee selectByUsername(@Param("username") String username);
+
+    @AutoFill(OperationType.UPDATE)
+    @Override
+    int updateById(Employee entity);
+
+    @AutoFill(OperationType.INSERT)
+    @Override
+    int insert(Employee entity);
+
+    @AutoFill(OperationType.UPDATE)
+    void update(Employee employee);
 }

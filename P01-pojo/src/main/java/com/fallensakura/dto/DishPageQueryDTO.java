@@ -1,6 +1,5 @@
 package com.fallensakura.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,11 +12,17 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeLoginDTO implements Serializable {
+public class DishPageQueryDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private String username;
+    private Long categoryId;
 
-    private String password;
+    private String name;
+
+    private Integer page;
+
+    private Integer pageSize;
+
+    private Integer status;
 }

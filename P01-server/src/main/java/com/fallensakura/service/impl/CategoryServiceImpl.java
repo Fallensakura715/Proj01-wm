@@ -38,38 +38,26 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
-    CategoryMapper categoryMapper;
+    private CategoryMapper categoryMapper;
 
     @Autowired
-    DishMapper dishMapper;
+    private DishMapper dishMapper;
 
     @Autowired
-    SetmealMapper setmealMapper;
+    private SetmealMapper setmealMapper;
 
     @Transactional
     @Override
     public void update(CategoryDTO dto) {
         Category category = new Category();
         BeanUtils.copyProperties(dto, category);
-
-        category.setUpdateUser(BaseContext.getCurrentId());
-        category.setUpdateTime(LocalDateTime.now());
-
-        categoryMapper.updateById(category);
+        categoryMapper.update(category);
     }
 
     @Override
     public PageResult<Category> pageQuery(CategoryPageQueryDTO dto) {
         Page<Category> page = new Page<>(dto.getPage(), dto.getPageSize());
-        LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
-
-        wrapper.like(StringUtils.isNotBlank(dto.getName()),
-                Category::getName, dto.getName())
-                .eq(Category::getType, dto.getType())
-                .orderByAsc(Category::getSort)
-                .orderByDesc(Category::getCreateTime);
-
-        Page<Category> categoryPage = categoryMapper.selectPage(page, wrapper);
+        Page<Category> categoryPage = categoryMapper.selectPage(page, dto);
         return new PageResult<>(categoryPage.getTotal(), categoryPage.getRecords());
     }
 
@@ -80,7 +68,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .status(status)
                 .id(id)
                 .build();
-        categoryMapper.updateById(category);
+        categoryMapper.update(category);
     }
 
     @Transactional
@@ -88,13 +76,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void addCategory(CategoryDTO dto) {
         Category category = new Category();
         BeanUtils.copyProperties(dto, category);
-
         category.setStatus(1);
-        category.setCreateTime(LocalDateTime.now());
-        category.setCreateUser(BaseContext.getCurrentId());
-        category.setUpdateTime(LocalDateTime.now());
-        category.setUpdateUser(BaseContext.getCurrentId());
-
         categoryMapper.insert(category);
     }
 
