@@ -1,6 +1,5 @@
 package com.fallensakura.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,23 +7,31 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @Builder
-public class EmployeeDTO implements Serializable {
+@NoArgsConstructor
+@AllArgsConstructor
+public class DishDTO implements Serializable {
+
     @Serial
     private static final long serialVersionUID = 1L;
 
     private Long id;
 
-    private String idNumber;
+    private String image;
 
     private String name;
 
-    private String phone;
+    private BigDecimal price;
 
-    private String sex;
+    private Integer status;
 
-    private String username;
+    private Long categoryId;
 
+    private String description;
+
+    private List<FlavorDTO> flavors;
 }

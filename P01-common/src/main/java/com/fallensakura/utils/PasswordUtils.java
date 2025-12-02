@@ -1,8 +1,8 @@
-package com.fallensakura.util;
+package com.fallensakura.utils;
 
 import org.springframework.util.DigestUtils;
 
-public class PasswordUtil {
+public class PasswordUtils {
     public static String encrypt(String password) {
         return DigestUtils.md5DigestAsHex(password.getBytes());
     }

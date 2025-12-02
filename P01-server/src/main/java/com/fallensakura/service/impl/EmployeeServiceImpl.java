@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fallensakura.constant.PasswordConstant;
 import com.fallensakura.constant.StatusConstant;
-import com.fallensakura.context.BaseContext;
 import com.fallensakura.dto.EditPasswordDTO;
 import com.fallensakura.dto.EmployeeDTO;
 import com.fallensakura.dto.EmployeeLoginDTO;
@@ -17,15 +16,13 @@ import com.fallensakura.exception.PasswordErrorException;
 import com.fallensakura.mapper.EmployeeMapper;
 import com.fallensakura.result.PageResult;
 import com.fallensakura.service.EmployeeService;
-import com.fallensakura.util.PasswordUtil;
+import com.fallensakura.utils.PasswordUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
-
-import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -40,17 +37,18 @@ import java.time.LocalDateTime;
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
-    EmployeeMapper employeeMapper;
+    private EmployeeMapper employeeMapper;
 
     @Override
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
+        log.info("User {} logging in", employeeLoginDTO.getUsername());
 
         String username = employeeLoginDTO.getUsername();
         String password = employeeLoginDTO.getPassword();
 
         Employee employee = getEmployeeByUsername(username);
 
-        if (!PasswordUtil.matches(password, employee.getPassword())) {
+        if (!PasswordUtils.matches(password, employee.getPassword())) {
             throw new PasswordErrorException();
         }
 
@@ -64,24 +62,28 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     @Override
     public void editPassword(EditPasswordDTO editPasswordDTO) {
+        log.info("User {} changing password", editPasswordDTO.getEmployeeId());
+
         String oldPassword = editPasswordDTO.getOldPassword();
         String newPassword = editPasswordDTO.getNewPassword();
 
         Employee employee = getEmployeeById(editPasswordDTO.getEmployeeId());
 
-        if (!PasswordUtil.matches(oldPassword, employee.getPassword())) {
+        if (!PasswordUtils.matches(oldPassword, employee.getPassword())) {
             log.info("Wrong password: {}", oldPassword);
             log.info("::{}", DigestUtils.md5DigestAsHex(employee.getPassword().getBytes()));
             throw new PasswordErrorException();
         }
 
         employee.setPassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()));
-        employeeMapper.updateById(employee);
+        employeeMapper.update(employee);
     }
 
     @Transactional
     @Override
     public void updateStatus(Integer status, Long id) {
+        log.info("User {} updating status", id);
+
         if (!status.equals(StatusConstant.ENABLE) && !status.equals(StatusConstant.DISABLE)) {
             throw new IllegalArgumentException("状态值错误");
         }
@@ -90,11 +92,13 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .status(status)
                 .id(id)
                 .build();
-        employeeMapper.updateById(employee);
+        employeeMapper.update(employee);
     }
 
     @Override
     public PageResult<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        log.info("PageQuerying...");
+
         Page<Employee> page = new Page<>(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
         LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
 
@@ -110,14 +114,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     @Override
     public void addEmployee(EmployeeDTO employeeDTO) {
+        log.info("Adding employee: {}", employeeDTO.getUsername());
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
         employee.setStatus(StatusConstant.ENABLE);
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.insert(employee);
     }
 
@@ -131,13 +132,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     @Override
     public void update(EmployeeDTO employeeDTO) {
+        log.info("Updating employee {}", employeeDTO.getUsername());
         Employee employee = selectById(employeeDTO.getId());
         BeanUtils.copyProperties(employeeDTO, employee);
-
-        employee.setUpdateUser(BaseContext.getCurrentId());
-        employee.setUpdateTime(LocalDateTime.now());
-
-        employeeMapper.updateById(employee);
+        employeeMapper.update(employee);
     }
 
     private Employee getEmployeeById(Long id) {

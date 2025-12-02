@@ -1,4 +1,4 @@
-package com.fallensakura.util;
+package com.fallensakura.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JwtUtil {
+public class JwtUtils {
 
     private static SecretKey getSecretKey(String secretKey) {
         return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
@@ -40,7 +40,7 @@ public class JwtUtil {
      * @return
      */
     public static Long getEmployeeId(String token, String secretKey) {
-        return praseToken(token, secretKey).get("employeeId", Long.class);
+        return parseToken(token, secretKey).get("employeeId", Long.class);
     }
 
     /**
@@ -48,7 +48,7 @@ public class JwtUtil {
      * @param token
      * @return
      */
-    public static Claims praseToken(String token, String secretKey) {
+    public static Claims parseToken(String token, String secretKey) {
         return Jwts.parser()
                 .verifyWith(getSecretKey(secretKey))
                 .build()

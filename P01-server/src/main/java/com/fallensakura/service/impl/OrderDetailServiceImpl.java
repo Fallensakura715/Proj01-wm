@@ -1,8 +1,5 @@
 package com.fallensakura.service.impl;
 
-import com.fallensakura.entity.OrderDetail;
-import com.fallensakura.mapper.OrderDetailMapper;
-import com.fallensakura.service.OrderDetailService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,6 +11,6 @@ import org.springframework.stereotype.Service;
  * @since 2025-10-16
  */
 @Service
-public class OrderDetailServiceImpl implements OrderDetailService {
+public class OrderDetailServiceImpl {
 
 }

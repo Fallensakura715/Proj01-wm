@@ -29,11 +29,11 @@ import java.util.List;
 public class CategoryController {
 
     @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
 
     @PutMapping
     @Operation(summary = "修改分类")
-    Result<?> update(@RequestBody CategoryDTO categoryDTO) {
+    Result<String> update(@RequestBody CategoryDTO categoryDTO) {
         categoryService.update(categoryDTO);
         return Result.success();
     }
@@ -46,21 +46,21 @@ public class CategoryController {
 
     @PostMapping("/status/{status}")
     @Operation(summary = "启用、禁用分类")
-    Result<?> updateStatus(@PathVariable Integer status, @RequestParam Long id) {
+    Result<String> updateStatus(@PathVariable Integer status, @RequestParam Long id) {
         categoryService.updateStatus(status, id);
         return Result.success();
     }
 
     @PostMapping
     @Operation(summary = "新增分类")
-    Result<?> addCategory(@RequestBody CategoryDTO dto) {
+    Result<String> addCategory(@RequestBody CategoryDTO dto) {
         categoryService.addCategory(dto);
         return Result.success();
     }
 
     @DeleteMapping
     @Operation(summary = "根据ID删除分类")
-    Result<?> deleteById(Long id) {
+    Result<String> deleteById(Long id) {
         categoryService.deleteById(id);
         return Result.success();
     }

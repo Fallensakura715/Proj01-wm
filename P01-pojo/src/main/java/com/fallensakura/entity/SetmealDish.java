@@ -25,9 +25,7 @@ import java.math.BigDecimal;
 @Data
 @Accessors(chain = true)
 @TableName("setmeal_dish")
-@Schema(name = "SetmealDish", description = "")
 public class SetmealDish implements Serializable {
-
     @Serial
     private static final long serialVersionUID = 1L;
 

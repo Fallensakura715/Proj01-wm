@@ -3,10 +3,7 @@ package com.fallensakura.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serial;
@@ -23,6 +20,7 @@ import java.io.Serializable;
 @Data
 @Accessors(chain = true)
 @Schema(name = "Flavor", description = "")
+@Builder
 public class Flavor implements Serializable {
 
     @Serial

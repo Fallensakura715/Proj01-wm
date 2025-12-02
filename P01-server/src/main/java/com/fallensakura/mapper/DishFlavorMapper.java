@@ -1,8 +1,10 @@
 package com.fallensakura.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.fallensakura.entity.Flavor;
+import com.fallensakura.entity.DishFlavor;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,6 +15,8 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2025-10-16
  */
 @Mapper
-public interface FlavorMapper extends BaseMapper<Flavor> {
+public interface DishFlavorMapper extends BaseMapper<DishFlavor> {
+
+    void insertBatch(List<DishFlavor> list);
 
 }
