@@ -3,12 +3,13 @@ package com.fallensakura.controller;
 import com.fallensakura.result.Result;
 import com.fallensakura.service.CommonService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -22,9 +23,9 @@ public class CommonController {
     @Autowired
     private CommonService commonService;
 
-    @PostMapping("/upload")
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "文件上传")
-    public Result<String> uploadImage(MultipartFile file) {
+    public Result<String> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
             return Result.success(commonService.uploadImage(file));
         } catch (IOException e) {
