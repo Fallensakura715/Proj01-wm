@@ -1,11 +1,14 @@
 package com.fallensakura.vo;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+
+@Builder
 @Data
 public class BusinessDataVO implements Serializable {
     @Serial
@@ -13,11 +16,11 @@ public class BusinessDataVO implements Serializable {
 
     private Integer newUsers;
 
-    private double orderCompletionRate;
+    private Double orderCompletionRate;
 
-    private BigDecimal turnover;
+    private Double turnover;
 
-    private BigDecimal unitPrice;
+    private Double unitPrice;
 
     private Integer validOrderCount;
 }

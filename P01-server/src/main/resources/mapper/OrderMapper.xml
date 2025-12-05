@@ -2,4 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fallensakura.mapper.OrderMapper">
 
+    <select id="countValidOrders" resultType="java.lang.Integer">
+        select count(id)
+        from `order`
+        where order_time between #{beginTime} and #{endTime}
+        and status = 5
+    </select>
+
+    <select id="countTotalOrders" resultType="java.lang.Integer">
+        select count(id)
+        from `order`
+        where order_time between #{beginTime} and #{endTime}
+    </select>
+
+    <select id="sumTurnover" resultType="java.lang.Double">
+        select ifnull(sum(amount), 0)
+        from `order`
+        where order_time between #{beginTime} and #{endTime}
+        and status = 5
+    </select>
+
 </mapper>
