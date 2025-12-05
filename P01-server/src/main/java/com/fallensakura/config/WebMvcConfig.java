@@ -1,7 +1,6 @@
 package com.fallensakura.config;
 
 import com.fallensakura.interceptor.JwtTokenAdminInterceptor;
-import com.fallensakura.properties.FileUploadProperties;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.TimeZone;
@@ -20,13 +18,13 @@ import java.util.TimeZone;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
-    JwtTokenAdminInterceptor loginCheckInterceptor;
+    JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
 
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginCheckInterceptor)
+        registry.addInterceptor(jwtTokenAdminInterceptor)
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns(
                         "/admin/employee/login",
@@ -35,7 +33,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/swagger-ui/**",
                         "/swagger-ui.html",
                         "/swagger-resources/**",
-                        "/webjars/**"
+                        "/webjars/**",
+                        "/admin/workspace/**"
                 );
     }
 
