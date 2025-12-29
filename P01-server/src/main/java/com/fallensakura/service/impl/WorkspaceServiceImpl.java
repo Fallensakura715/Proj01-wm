@@ -2,6 +2,7 @@ package com.fallensakura.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fallensakura.constant.OrderConstant;
+import com.fallensakura.constant.StatusConstant;
 import com.fallensakura.entity.Dish;
 import com.fallensakura.entity.Order;
 import com.fallensakura.entity.Setmeal;
@@ -70,12 +71,12 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
         Long soldCount = setmealMapper.selectCount(
                 new LambdaQueryWrapper<Setmeal>()
-                        .eq(Setmeal::getStatus, 1)
+                        .eq(Setmeal::getStatus, StatusConstant.ENABLE)
         );
 
         Long discontinuedCount = setmealMapper.selectCount(
                 new LambdaQueryWrapper<Setmeal>()
-                        .eq(Setmeal::getStatus, 0)
+                        .eq(Setmeal::getStatus, StatusConstant.DISABLE)
         );
 
         return SetmealOverviewVO.builder()
@@ -89,12 +90,12 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
         Long soldCount = dishMapper.selectCount(
                 new LambdaQueryWrapper<Dish>()
-                        .eq(Dish::getStatus, 1)
+                        .eq(Dish::getStatus, StatusConstant.ENABLE)
         );
 
         Long discontinuedCount = dishMapper.selectCount(
                 new LambdaQueryWrapper<Dish>()
-                        .eq(Dish::getStatus, 0)
+                        .eq(Dish::getStatus, StatusConstant.DISABLE)
         );
 
         return DishOverviewVO.builder()
