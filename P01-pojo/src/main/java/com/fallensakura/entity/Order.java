@@ -36,7 +36,7 @@ public class Order implements Serializable {
      * 1待付款 2待接单 3已接单 4派送中 5已完成 6已取消
      */
     @Schema(description = "1待付款 2待接单 3已接单 4派送中 5已完成 6已取消")
-    private Byte status;
+    private Integer status;
 
     private Long userId;
 
@@ -46,7 +46,7 @@ public class Order implements Serializable {
      * 1立即送出  0选择具体时间
      */
     @Schema(description = "1立即送出  0选择具体时间")
-    private Byte deliveryStatus;
+    private Integer deliveryStatus;
 
     private LocalDateTime deliveryTime;
 
@@ -56,13 +56,13 @@ public class Order implements Serializable {
      * 1微信支付 2支付宝支付
      */
     @Schema(description = "1微信支付 2支付宝支付")
-    private Byte paymentMethod;
+    private Integer paymentMethod;
 
     /**
      * 0未支付 1已支付 2退款
      */
     @Schema(description = "0未支付 1已支付 2退款")
-    private Byte paymentStatus;
+    private Integer paymentStatus;
 
     private BigDecimal amount;
 
@@ -86,7 +86,7 @@ public class Order implements Serializable {
      * 1按餐量提供  0选择具体数量
      */
     @Schema(description = "1按餐量提供  0选择具体数量")
-    private Byte tablewareStatus;
+    private Integer tablewareStatus;
 
     private String receiverName;
 

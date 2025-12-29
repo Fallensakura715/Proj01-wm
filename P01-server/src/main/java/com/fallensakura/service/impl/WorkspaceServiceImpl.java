@@ -1,7 +1,9 @@
 package com.fallensakura.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.fallensakura.constant.OrderConstant;
 import com.fallensakura.entity.Dish;
+import com.fallensakura.entity.Order;
 import com.fallensakura.entity.Setmeal;
 import com.fallensakura.mapper.DishMapper;
 import com.fallensakura.mapper.OrderMapper;
@@ -12,7 +14,6 @@ import com.fallensakura.vo.BusinessDataVO;
 import com.fallensakura.vo.DishOverviewVO;
 import com.fallensakura.vo.OrderOverviewVO;
 import com.fallensakura.vo.SetmealOverviewVO;
-import com.sun.jdi.LongValue;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -104,6 +105,35 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
     @Override
     public OrderOverviewVO selectOverviewOrders() {
-        return null;
+
+        Long orderCount = orderMapper.selectCount(null);
+
+        Long cancelledOrders = orderMapper.selectCount(
+                new LambdaQueryWrapper<Order>()
+                        .eq(Order::getStatus, OrderConstant.CANCELLED)
+        );
+
+        Long completedOrders = orderMapper.selectCount(
+                new LambdaQueryWrapper<Order>()
+                        .eq(Order::getStatus, OrderConstant.COMPLETED)
+        );
+
+        Long deliveredOrders = orderMapper.selectCount(
+                new LambdaQueryWrapper<Order>()
+                        .eq(Order::getStatus, OrderConstant.DELIVERED)
+        );
+
+        Long waitingOrders = orderMapper.selectCount(
+                new LambdaQueryWrapper<Order>()
+                        .eq(Order::getStatus, OrderConstant.PENDING_ORDER)
+        );
+
+        return OrderOverviewVO.builder()
+                .allOrders(orderCount.intValue())
+                .cancelledOrders(cancelledOrders.intValue())
+                .completedOrders(completedOrders.intValue())
+                .deliveredOrders(deliveredOrders.intValue())
+                .waitingOrders(waitingOrders.intValue())
+                .build();
     }
 }

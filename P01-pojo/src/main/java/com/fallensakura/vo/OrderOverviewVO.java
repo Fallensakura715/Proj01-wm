@@ -1,11 +1,13 @@
 package com.fallensakura.vo;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 
 @Data
+@Builder
 public class OrderOverviewVO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
