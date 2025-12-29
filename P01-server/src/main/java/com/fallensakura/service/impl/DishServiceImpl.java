@@ -17,8 +17,9 @@ import com.fallensakura.mapper.FlavorMapper;
 import com.fallensakura.result.PageResult;
 import com.fallensakura.service.DishService;
 import com.fallensakura.vo.DishVO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,19 +36,14 @@ import java.util.List;
  * @since 2025-10-16
  */
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class DishServiceImpl implements DishService {
 
-    @Autowired
-    private DishMapper dishMapper;
-
-    @Autowired
-    private DishFlavorMapper dishFlavorMapper;
-
-    @Autowired
-    private FlavorMapper flavorMapper;
-
-    @Autowired
-    private CategoryMapper categoryMapper;
+    private final DishMapper dishMapper;
+    private final DishFlavorMapper dishFlavorMapper;
+    private final FlavorMapper flavorMapper;
+    private final CategoryMapper categoryMapper;
 
     @Transactional
     @Override

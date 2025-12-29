@@ -8,6 +8,7 @@ import com.fallensakura.vo.OrderOverviewVO;
 import com.fallensakura.vo.SetmealOverviewVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/admin/workspace")
 @Tag(name = "工作台接口")
+@RequiredArgsConstructor
 public class WorkspaceController {
 
-    @Autowired
-    private WorkspaceService workspaceService;
+    private final WorkspaceService workspaceService;
 
     @GetMapping("/businessData")
     @Operation(summary = "查询今日运营数据")

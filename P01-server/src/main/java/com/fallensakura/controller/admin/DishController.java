@@ -9,6 +9,7 @@ import com.fallensakura.service.DishService;
 import com.fallensakura.vo.DishVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,10 +28,10 @@ import java.util.List;
 @RequestMapping("/admin/dish")
 @Tag(name = "菜品接口")
 @Slf4j
+@RequiredArgsConstructor
 public class DishController {
 
-    @Autowired
-    private DishService dishService;
+    private final DishService dishService;
 
     @PutMapping
     @Operation(summary = "修改菜品")

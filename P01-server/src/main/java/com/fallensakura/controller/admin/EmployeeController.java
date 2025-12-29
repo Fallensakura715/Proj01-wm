@@ -14,6 +14,7 @@ import com.fallensakura.utils.JwtUtils;
 import com.fallensakura.vo.EmployeeLoginVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +23,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin/employee")
 @Slf4j
 @Tag(name = "员工接口")
+@RequiredArgsConstructor
 public class EmployeeController {
 
-    @Autowired
-    private EmployeeService employeeService;
-
-    @Autowired
-    private JwtProperties jwtProperties;
+    private final EmployeeService employeeService;
+    private final JwtProperties jwtProperties;
 
     @PostMapping("/login")
     @Operation(summary = "员工登录")

@@ -8,6 +8,7 @@ import com.fallensakura.service.SetmealService;
 import com.fallensakura.vo.SetmealVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +27,10 @@ import java.util.List;
 @RequestMapping("/admin/setmeal")
 @Slf4j
 @Tag(name = "套餐接口")
+@RequiredArgsConstructor
 public class SetmealController {
 
-    @Autowired
-    private SetmealService setmealService;
+    private final SetmealService setmealService;
 
     @PutMapping
     @Operation(summary = "修改套餐")

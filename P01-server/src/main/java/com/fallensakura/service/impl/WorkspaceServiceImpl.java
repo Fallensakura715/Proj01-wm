@@ -1,14 +1,16 @@
 package com.fallensakura.service.impl;
 
+import com.fallensakura.mapper.DishMapper;
 import com.fallensakura.mapper.OrderMapper;
+import com.fallensakura.mapper.SetmealMapper;
 import com.fallensakura.mapper.UserMapper;
 import com.fallensakura.service.WorkspaceService;
 import com.fallensakura.vo.BusinessDataVO;
 import com.fallensakura.vo.DishOverviewVO;
 import com.fallensakura.vo.OrderOverviewVO;
 import com.fallensakura.vo.SetmealOverviewVO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,13 +19,13 @@ import java.time.LocalTime;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class WorkspaceServiceImpl implements WorkspaceService {
 
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private OrderMapper orderMapper;
+    private final UserMapper userMapper;
+    private final OrderMapper orderMapper;
+    private final SetmealMapper setmealMapper;
+    private final DishMapper dishMapper;
 
     @Override
     public BusinessDataVO selectBusinessData() {
@@ -60,6 +62,8 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
     @Override
     public SetmealOverviewVO selectOverviewSetmeals() {
+
+
         return null;
     }
 

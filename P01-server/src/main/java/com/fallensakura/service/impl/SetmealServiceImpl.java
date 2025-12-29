@@ -13,18 +13,17 @@ import com.fallensakura.mapper.CategoryMapper;
 import com.fallensakura.mapper.SetmealDishMapper;
 import com.fallensakura.mapper.SetmealMapper;
 import com.fallensakura.result.PageResult;
-import com.fallensakura.result.Result;
 import com.fallensakura.service.SetmealService;
 import com.fallensakura.vo.SetmealVO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 /**
  * <p>
@@ -35,16 +34,13 @@ import java.util.Set;
  * @since 2025-10-16
  */
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class SetmealServiceImpl implements SetmealService {
 
-    @Autowired
-    private SetmealMapper setmealMapper;
-
-    @Autowired
-    private CategoryMapper categoryMapper;
-
-    @Autowired
-    private SetmealDishMapper setmealDishMapper;
+    private final SetmealMapper setmealMapper;
+    private final CategoryMapper categoryMapper;
+    private final SetmealDishMapper setmealDishMapper;
 
     @Transactional
     @Override

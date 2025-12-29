@@ -1,9 +1,7 @@
 package com.fallensakura.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.fallensakura.context.BaseContext;
 import com.fallensakura.dto.CategoryDTO;
 import com.fallensakura.dto.CategoryPageQueryDTO;
 import com.fallensakura.entity.Category;
@@ -12,17 +10,15 @@ import com.fallensakura.entity.Setmeal;
 import com.fallensakura.exception.BusinessException;
 import com.fallensakura.mapper.CategoryMapper;
 import com.fallensakura.mapper.DishMapper;
-import com.fallensakura.mapper.EmployeeMapper;
 import com.fallensakura.mapper.SetmealMapper;
 import com.fallensakura.result.PageResult;
 import com.fallensakura.service.CategoryService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -35,16 +31,12 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
-    @Autowired
-    private CategoryMapper categoryMapper;
-
-    @Autowired
-    private DishMapper dishMapper;
-
-    @Autowired
-    private SetmealMapper setmealMapper;
+    private final CategoryMapper categoryMapper;
+    private final DishMapper dishMapper;
+    private final SetmealMapper setmealMapper;
 
     @Transactional
     @Override

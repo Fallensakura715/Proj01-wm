@@ -8,6 +8,7 @@ import com.fallensakura.result.Result;
 import com.fallensakura.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +27,10 @@ import java.util.List;
 @RequestMapping("/admin/category")
 @Slf4j
 @Tag(name = "分类接口")
+@RequiredArgsConstructor
 public class CategoryController {
 
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @PutMapping
     @Operation(summary = "修改分类")
