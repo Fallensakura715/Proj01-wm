@@ -1,5 +1,8 @@
 package com.fallensakura.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.fallensakura.entity.Dish;
+import com.fallensakura.entity.Setmeal;
 import com.fallensakura.mapper.DishMapper;
 import com.fallensakura.mapper.OrderMapper;
 import com.fallensakura.mapper.SetmealMapper;
@@ -9,6 +12,7 @@ import com.fallensakura.vo.BusinessDataVO;
 import com.fallensakura.vo.DishOverviewVO;
 import com.fallensakura.vo.OrderOverviewVO;
 import com.fallensakura.vo.SetmealOverviewVO;
+import com.sun.jdi.LongValue;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -63,13 +67,39 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     @Override
     public SetmealOverviewVO selectOverviewSetmeals() {
 
+        Long soldCount = setmealMapper.selectCount(
+                new LambdaQueryWrapper<Setmeal>()
+                        .eq(Setmeal::getStatus, 1)
+        );
 
-        return null;
+        Long discontinuedCount = setmealMapper.selectCount(
+                new LambdaQueryWrapper<Setmeal>()
+                        .eq(Setmeal::getStatus, 0)
+        );
+
+        return SetmealOverviewVO.builder()
+                .discontinued(discontinuedCount.intValue())
+                .sold(soldCount.intValue())
+                .build();
     }
 
     @Override
     public DishOverviewVO selectOverviewDishes() {
-        return null;
+
+        Long soldCount = dishMapper.selectCount(
+                new LambdaQueryWrapper<Dish>()
+                        .eq(Dish::getStatus, 1)
+        );
+
+        Long discontinuedCount = dishMapper.selectCount(
+                new LambdaQueryWrapper<Dish>()
+                        .eq(Dish::getStatus, 0)
+        );
+
+        return DishOverviewVO.builder()
+                .discontinued(discontinuedCount.intValue())
+                .sold(soldCount.intValue())
+                .build();
     }
 
     @Override
