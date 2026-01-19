@@ -4,6 +4,7 @@ import com.fallensakura.constant.MessageConstant;
 import com.fallensakura.exception.AccountNotFoundException;
 import com.fallensakura.exception.BusinessException;
 import com.fallensakura.result.Result;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -38,6 +39,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public Result<String> handleIllegalArgumentException(IllegalArgumentException e) {
+        return Result.error(e.getMessage());
+    }
+
+    @ExceptionHandler(JsonProcessingException.class)
+    public Result<String> handleJsonProcessingException(JsonProcessingException e) {
         return Result.error(e.getMessage());
     }
 }

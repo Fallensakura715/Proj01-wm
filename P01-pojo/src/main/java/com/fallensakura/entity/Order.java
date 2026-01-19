@@ -3,6 +3,7 @@ package com.fallensakura.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
  * @since 2025-10-16
  */
 @Data
+@Builder
 @Accessors(chain = true)
 @Schema(name = "Order", description = "")
 public class Order implements Serializable {

@@ -10,4 +10,9 @@ package com.fallensakura.service;
  */
 public interface OrderService {
 
+    /**
+     * 支付成功，修改订单状态
+     * @param outTradeNo
+     */
+    void paySuccess(String outTradeNo);
 }

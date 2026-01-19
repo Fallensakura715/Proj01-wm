@@ -31,4 +31,5 @@ public interface OrderMapper extends BaseMapper<Order> {
     @Select("select * from `order` where status = #{status} and order_time = #{orderTime}")
     List<Order> getByStatusAndOrdertimeLT(@Param("status") Integer status,
                                           @Param("orderTime") LocalDateTime orderTime);
+
 }
