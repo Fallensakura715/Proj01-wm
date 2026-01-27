@@ -2,6 +2,9 @@ package com.fallensakura.service.impl;
 
 import com.fallensakura.constant.OrderConstant;
 import com.fallensakura.context.BaseContext;
+import com.fallensakura.dto.OrderCancellationDTO;
+import com.fallensakura.dto.OrderConditionSearchDTO;
+import com.fallensakura.dto.OrderRejectionDTO;
 import com.fallensakura.entity.Order;
 import com.fallensakura.exception.BusinessException;
 import com.fallensakura.mapper.OrderMapper;
@@ -53,5 +56,50 @@ public class OrderServiceImpl implements OrderService {
         map.put("content", outTradeNo);
 
         webSocketServer.sendToAllClient(objectMapper.writeValueAsString(map));
+    }
+
+    @Override
+    @Transactional
+    public void cancelOrder(OrderCancellationDTO dto) {
+
+    }
+
+    @Override
+    public void getOrderStatistics() {
+
+    }
+
+    @Override
+    @Transactional
+    public void completeOrder(Long id) {
+
+    }
+
+    @Override
+    @Transactional
+    public void rejectOrder(OrderRejectionDTO dto) {
+
+    }
+
+    @Override
+    @Transactional
+    public void acceptOrder(Long id) {
+
+    }
+
+    @Override
+    public void getOrderDetails(Long id) {
+
+    }
+
+    @Override
+    @Transactional
+    public void deliverOrder(Long id) {
+
+    }
+
+    @Override
+    public void searchOrder(OrderConditionSearchDTO dto) {
+
     }
 }
