@@ -3,6 +3,9 @@ package com.fallensakura.service;
 import com.fallensakura.dto.OrderCancellationDTO;
 import com.fallensakura.dto.OrderConditionSearchDTO;
 import com.fallensakura.dto.OrderRejectionDTO;
+import com.fallensakura.result.PageResult;
+import com.fallensakura.vo.OrderDetailsVO;
+import com.fallensakura.vo.OrderStatisticsVO;
 
 /**
  * <p>
@@ -22,14 +25,14 @@ public interface OrderService {
 
     /**
      * 取消订单
-     * @param vo
+     * @param dto
      */
     void cancelOrder(OrderCancellationDTO dto);
 
     /**
      * 各个状态的订单数量统计
      */
-    void getOrderStatistics();
+    OrderStatisticsVO getOrderStatistics();
 
     /**
      * 完成订单
@@ -53,7 +56,7 @@ public interface OrderService {
      * 查询订单详情
      * @param id
      */
-    void getOrderDetails(Long id);
+    OrderDetailsVO getOrderDetails(Long id);
 
     /**
      * 派送订单
@@ -65,5 +68,5 @@ public interface OrderService {
      * 订单搜索
      * @param dto
      */
-    void searchOrder(OrderConditionSearchDTO dto);
+    PageResult<OrderDetailsVO> searchOrder(OrderConditionSearchDTO dto);
 }

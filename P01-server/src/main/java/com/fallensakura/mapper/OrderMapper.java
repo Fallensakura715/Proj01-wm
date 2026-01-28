@@ -32,4 +32,6 @@ public interface OrderMapper extends BaseMapper<Order> {
     List<Order> getByStatusAndOrdertimeLT(@Param("status") Integer status,
                                           @Param("orderTime") LocalDateTime orderTime);
 
+    @Select("select count(*) from `order` where status = #{status}")
+    Integer countByStatus(@Param("status") Integer status);
 }

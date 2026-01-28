@@ -18,8 +18,12 @@ public class OrderConditionSearchDTO {
     private Integer pageSize;
 
     private String phone;
+
     private Integer status;
+
     private String number;
+
     private LocalDateTime beginTime;
+
     private LocalDateTime endTime;
 }
