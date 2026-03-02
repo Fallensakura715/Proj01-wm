@@ -1,4 +1,4 @@
-package com.fallensakura.controller.admin;
+package com.fallensakura.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-10-16
  */
 @RestController
-@RequestMapping("/flavor")
+@RequestMapping("/user")
 @RequiredArgsConstructor
-public class FlavorController {
+public class UserController {
 
 }
