@@ -2,6 +2,7 @@ package com.fallensakura.service;
 
 import com.fallensakura.dto.SetmealDTO;
 import com.fallensakura.dto.SetmealPageQueryDTO;
+import com.fallensakura.entity.Setmeal;
 import com.fallensakura.result.PageResult;
 import com.fallensakura.vo.SetmealVO;
 
@@ -54,4 +55,11 @@ public interface SetmealService {
      * @return SetmealVO
      */
     SetmealVO selectById(Long id);
+
+    /**
+     * 根据分类id查询套餐
+     * @param categoryId
+     * @return List<Setmeal>
+     */
+    List<Setmeal> selectByCategoryId(Long categoryId);
 }

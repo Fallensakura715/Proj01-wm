@@ -62,4 +62,11 @@ public interface DishService {
      * @param id
      */
     void updateStatus(Integer status, Long id);
+
+    /**
+     * 根据套餐id查询包含的菜品
+     * @param setmealId
+     * @return List<Dish>
+     */
+    List<Dish> selectBySetmealId(Long setmealId);
 }

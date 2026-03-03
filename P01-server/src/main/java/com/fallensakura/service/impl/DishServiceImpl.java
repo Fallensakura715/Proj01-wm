@@ -5,15 +5,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fallensakura.dto.DishDTO;
 import com.fallensakura.dto.DishPageQueryDTO;
 import com.fallensakura.dto.FlavorDTO;
-import com.fallensakura.entity.Category;
-import com.fallensakura.entity.Dish;
-import com.fallensakura.entity.DishFlavor;
-import com.fallensakura.entity.Flavor;
+import com.fallensakura.entity.*;
 import com.fallensakura.exception.BusinessException;
-import com.fallensakura.mapper.CategoryMapper;
-import com.fallensakura.mapper.DishFlavorMapper;
-import com.fallensakura.mapper.DishMapper;
-import com.fallensakura.mapper.FlavorMapper;
+import com.fallensakura.mapper.*;
 import com.fallensakura.result.PageResult;
 import com.fallensakura.service.DishService;
 import com.fallensakura.vo.DishVO;
@@ -25,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -44,6 +39,8 @@ public class DishServiceImpl implements DishService {
     private final DishFlavorMapper dishFlavorMapper;
     private final FlavorMapper flavorMapper;
     private final CategoryMapper categoryMapper;
+    private final SetmealMapper setmealMapper;
+    private final SetmealDishMapper setmealDishMapper;
 
     @Transactional
     @Override
@@ -142,5 +139,17 @@ public class DishServiceImpl implements DishService {
                 .id(id)
                 .build();
         dishMapper.update(dish);
+    }
+
+    @Override
+    public List<Dish> selectBySetmealId(Long setmealId) {
+        List<Long> dishIds = setmealDishMapper.selectList(
+                new LambdaQueryWrapper<SetmealDish>()
+                        .eq(SetmealDish::getSetmealId, setmealId)
+        ).stream().map(SetmealDish::getDishId).toList();
+
+        if (dishIds.isEmpty()) return Collections.emptyList();
+
+        return dishMapper.selectByIds(dishIds);
     }
 }

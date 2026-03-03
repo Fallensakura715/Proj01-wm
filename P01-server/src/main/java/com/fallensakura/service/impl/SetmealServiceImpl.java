@@ -115,4 +115,12 @@ public class SetmealServiceImpl implements SetmealService {
         vo.setSetmealDishes(dishes);
         return vo;
     }
+
+    @Override
+    public List<Setmeal> selectByCategoryId(Long categoryId) {
+        return setmealMapper.selectList(
+                new LambdaQueryWrapper<Setmeal>()
+                        .eq(Setmeal::getCategoryId, categoryId)
+        );
+    }
 }
