@@ -59,5 +59,5 @@ public class Address implements Serializable {
      * 1是 0否
      */
     @Schema(description = "1是 0否")
-    private Byte isDefault;
+    private Integer isDefault;
 }
