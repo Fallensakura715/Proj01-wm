@@ -21,15 +21,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface SetmealMapper extends BaseMapper<Setmeal> {
 
-    @AutoFill(OperationType.UPDATE)
-    @Override
-    int updateById(Setmeal setmeal);
-
-    @AutoFill(OperationType.INSERT)
-    @Override
-    int insert(Setmeal setmeal);
-
-    @AutoFill(OperationType.UPDATE)
     void update(Setmeal setmeal);
 
     Page<SetmealVO> selectPageVO(Page<SetmealVO> page, @Param("dto") SetmealPageQueryDTO dto);

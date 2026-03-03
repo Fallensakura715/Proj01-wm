@@ -1,8 +1,6 @@
 package com.fallensakura.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.Getter;
@@ -47,6 +45,7 @@ public class ShoppingCart implements Serializable {
 
     private String dishFlavor;
 
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     private String name;

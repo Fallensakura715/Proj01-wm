@@ -24,15 +24,6 @@ import java.util.List;
 @Mapper
 public interface DishMapper extends BaseMapper<Dish> {
 
-    @AutoFill(OperationType.UPDATE)
-    @Override
-    int updateById(Dish entity);
-
-    @AutoFill(OperationType.INSERT)
-    @Override
-    int insert(Dish entity);
-
-    @AutoFill(OperationType.UPDATE)
     void update(Dish dish);
 
     List<FlavorDTO> selectFlavorsByDishId(Long id);

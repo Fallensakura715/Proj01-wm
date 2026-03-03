@@ -1,6 +1,8 @@
 package com.fallensakura.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -60,24 +62,28 @@ public class Employee implements Serializable {
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     @Schema(description = "创建时间")
     private LocalDateTime createTime;
 
     /**
      * 最后修改时间
      */
+    @TableField(fill = FieldFill.UPDATE)
     @Schema(description = "最后修改时间")
     private LocalDateTime updateTime;
 
     /**
      * 创建人id
      */
+    @TableField(fill = FieldFill.INSERT)
     @Schema(description = "创建人id")
     private Long createUser;
 
     /**
      * 最后修改人id
      */
+    @TableField(fill = FieldFill.UPDATE)
     @Schema(description = "最后修改人id")
     private Long updateUser;
 }

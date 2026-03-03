@@ -30,15 +30,6 @@ public interface CategoryMapper extends BaseMapper<Category> {
     @Select("select * from category where type = #{type}")
     List<Category> selectByType(Integer type);
 
-    @AutoFill(OperationType.UPDATE)
-    @Override
-    int updateById(Category entity);
-
-    @AutoFill(OperationType.INSERT)
-    @Override
-    int insert(Category entity);
-
-    @AutoFill(OperationType.UPDATE)
     void update(Category category);
 
     Page<Category> selectPage(Page<Category> page, @Param("dto") CategoryPageQueryDTO dto);

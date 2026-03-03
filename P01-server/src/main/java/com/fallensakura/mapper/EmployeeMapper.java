@@ -23,14 +23,5 @@ public interface EmployeeMapper extends BaseMapper<Employee> {
     @Select("select * from employee where username = #{username}")
     Employee selectByUsername(@Param("username") String username);
 
-    @AutoFill(OperationType.UPDATE)
-    @Override
-    int updateById(Employee entity);
-
-    @AutoFill(OperationType.INSERT)
-    @Override
-    int insert(Employee entity);
-
-    @AutoFill(OperationType.UPDATE)
     void update(Employee employee);
 }
