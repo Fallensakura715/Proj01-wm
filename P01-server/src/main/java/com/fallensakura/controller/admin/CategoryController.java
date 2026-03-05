@@ -23,7 +23,7 @@ import java.util.List;
  * @author Fallensakura
  * @since 2025-10-16
  */
-@RestController
+@RestController("adminCategoryController")
 @RequestMapping("/admin/category")
 @Slf4j
 @Tag(name = "分类接口")

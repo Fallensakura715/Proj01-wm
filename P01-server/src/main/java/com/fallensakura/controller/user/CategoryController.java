@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@RestController("userCategoryController")
 @RequestMapping("/user/category")
 @RequiredArgsConstructor
 @Tag(name = "C端-分类接口")
