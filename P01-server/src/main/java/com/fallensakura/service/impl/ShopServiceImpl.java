@@ -20,7 +20,7 @@ import com.fallensakura.service.ShopService;
 public class ShopServiceImpl implements ShopService {
 
     public static final String STATUS = "SHOP_STATUS";
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<Object, Object> redisTemplate;
 
     @Override
     public Integer getStatus() {
