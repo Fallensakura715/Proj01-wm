@@ -23,7 +23,7 @@ import java.util.List;
  * @author Fallensakura
  * @since 2025-10-16
  */
-@RestController
+@RestController("adminSetmealController")
 @RequestMapping("/admin/setmeal")
 @Slf4j
 @Tag(name = "套餐接口")

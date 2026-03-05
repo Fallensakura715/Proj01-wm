@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController("userSetmealController")
 @RequestMapping("/user/setmeal")
 @RequiredArgsConstructor
 @Tag(name = "C端-套餐浏览接口")
