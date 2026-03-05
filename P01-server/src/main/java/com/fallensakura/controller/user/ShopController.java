@@ -2,7 +2,6 @@ package com.fallensakura.controller.user;
 
 import com.fallensakura.result.Result;
 import com.fallensakura.service.ShopService;
-import com.fallensakura.service.WorkspaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@RestController("userShopController")
 @RequestMapping("/user/shop")
 @RequiredArgsConstructor
 @Tag(name = "C端-店铺操作接口")

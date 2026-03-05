@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Fallensakura
  * @since 2025-12-29
  */
-@RestController
+@RestController("adminShopController")
 @RequestMapping("/admin/shop")
 @Slf4j
 @Tag(name = "店铺接口")
