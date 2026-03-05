@@ -23,7 +23,7 @@ public class CategoryController {
 
     @GetMapping("/list")
     @Operation(summary = "分类条件查询")
-    public Result<List<Category>> getCategoryList(@RequestParam Integer type) {
+    public Result<List<Category>> getCategoryList(@RequestParam(required = false) Integer type) {
         return Result.success(categoryService.selectByType(type));
     }
 }
