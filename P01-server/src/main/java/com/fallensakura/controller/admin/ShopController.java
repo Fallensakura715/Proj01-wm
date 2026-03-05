@@ -1,11 +1,11 @@
 package com.fallensakura.controller.admin;
 
 import com.fallensakura.result.Result;
+import com.fallensakura.service.ShopService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -22,20 +22,19 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "店铺接口")
 @RequiredArgsConstructor
 public class ShopController {
-    public static final String KEY = "SHOP_STATUS";
-    private final RedisTemplate<String, Object> redisTemplate;
+
+    private final ShopService shopService;
 
     @GetMapping("/status")
     @Operation(summary = "获取营业状态")
     public Result<?> getStatus() {
-        Integer status = (Integer) redisTemplate.opsForValue().get(KEY);
-        return Result.success(status);
+        return Result.success(shopService.getStatus());
     }
 
     @PutMapping("/{status}")
     @Operation(summary = "设置营业状态")
     public Result<Integer> setStatus(@PathVariable Integer status) {
-        redisTemplate.opsForValue().set(KEY, status);
+        shopService.setStatus(status);
         return Result.success();
     }
 }
