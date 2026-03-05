@@ -24,7 +24,7 @@ import java.util.List;
  * @author Fallensakura
  * @since 2025-10-16
  */
-@RestController
+@RestController("adminDishController")
 @RequestMapping("/admin/dish")
 @Tag(name = "菜品接口")
 @Slf4j

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@RestController("userDishController")
 @RequestMapping("/user/dish")
 @RequiredArgsConstructor
 @Tag(name = "C端-菜品浏览接口")
