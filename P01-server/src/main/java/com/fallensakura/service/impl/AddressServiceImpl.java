@@ -140,7 +140,7 @@ public class AddressServiceImpl implements AddressService {
 
         Address reset = new Address();
         reset.setIsDefault(0);
-        addressMapper.update(Wrappers.<Address>lambdaUpdate()
+        addressMapper.update(reset, Wrappers.<Address>lambdaUpdate()
                 .eq(Address::getUserId, userId)
                 .eq(Address::getIsDefault, 1));
 
