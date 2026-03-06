@@ -27,12 +27,12 @@ public class LogAspect {
         String methodName = joinPoint.getSignature().getName();
         Object[] args = joinPoint.getArgs();
 
-        log.info("Service called: {}.{}, args: {}", className, methodName, args);
+        log.info("[Service] Service called: {}.{}, args: {}", className, methodName, args);
 
         try {
             return joinPoint.proceed();
         } catch (Exception e) {
-            log.error("Service error: {}.{}, error: {}", className, methodName, e.getMessage(), e);
+            log.error("[Service] Service error: {}.{}, error: {}", className, methodName, e.getMessage(), e);
             throw e;
         }
     }
