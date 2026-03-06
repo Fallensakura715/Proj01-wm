@@ -16,7 +16,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class JwtTokenAdminInterceptor implements HandlerInterceptor {
+public class JwtTokenUserInterceptor implements HandlerInterceptor {
 
     private final JwtProperties jwtProperties;
 
@@ -24,12 +24,11 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object handler) {
-
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
 
-        String token = request.getHeader(jwtProperties.getAdminTokenName());
+        String token = request.getHeader(jwtProperties.getUserTokenName());
 
         if (!StringUtils.hasText(token) || !token.startsWith("Bearer ")) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -39,14 +38,13 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
         token = token.substring(7);
 
         try {
-            log.info("Parsing JWT Token...");
-            Long id = JwtUtils.parseToken(token, jwtProperties.getAdminSecretKey())
-                            .get(JwtClaimsConstant.EMPLOYEE_ID, Long.class);
-
-            BaseContext.setCurrentId(id);
+            log.info("Parsing User JWT Token...");
+            Long userId = JwtUtils.parseToken(token, jwtProperties.getUserSecretKey())
+                    .get(JwtClaimsConstant.USER_ID, Long.class);
+            BaseContext.setCurrentId(userId);
             return true;
         } catch (Exception e) {
-            log.error("Token parse failed: {}", e.getMessage());
+            log.error("User token parse failed: {}", e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }

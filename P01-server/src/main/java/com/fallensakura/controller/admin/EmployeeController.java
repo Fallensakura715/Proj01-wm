@@ -1,5 +1,6 @@
 package com.fallensakura.controller.admin;
 
+import com.fallensakura.constant.JwtClaimsConstant;
 import com.fallensakura.context.BaseContext;
 import com.fallensakura.properties.JwtProperties;
 import com.fallensakura.dto.EditPasswordDTO;
@@ -19,6 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/admin/employee")
 @Slf4j
@@ -33,11 +37,14 @@ public class EmployeeController {
     @Operation(summary = "员工登录")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
         Employee employee = employeeService.login(employeeLoginDTO);
+
         String token = JwtUtils.generateToken(
-                employee.getId(),
+                Map.of(JwtClaimsConstant.EMPLOYEE_ID, employee.getId()),
+                "employee_auth",
                 jwtProperties.getAdminSecretKey(),
                 jwtProperties.getExpirationTime()
         );
+
         EmployeeLoginVO vo = EmployeeLoginVO.builder()
                 .id(employee.getId())
                 .username(employee.getUsername())

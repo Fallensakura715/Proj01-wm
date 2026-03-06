@@ -26,15 +26,22 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtTokenAdminInterceptor)
                 .addPathPatterns("/admin/**")
+                .addPathPatterns("/user/**")
                 .excludePathPatterns(
                         "/admin/employee/login",
-                        "/admin/common/upload",
+                        "/user/user/login"
+                )
+                .excludePathPatterns(
+                        "/user/**",
+                        "/user/user/login",
+                        "/user/shop/status"
+                )
+                .excludePathPatterns(
                         "/v3/**",
                         "/swagger-ui/**",
                         "/swagger-ui.html",
                         "/swagger-resources/**",
-                        "/webjars/**",
-                        "/admin/workspace/**"
+                        "/webjars/**"
                 );
     }
 

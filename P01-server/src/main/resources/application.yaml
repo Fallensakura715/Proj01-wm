@@ -31,6 +31,13 @@ fallensakura:
     admin-secret-key: this_is_fallensakura's_secret_key
     admin-token-name: token
     expiration-time: 7200000
+    user-expiration-time: 7200000
+    user-secret-key: this_is_fallensakura's_secret_key
+    user-token-name: authentication
+
+  wechat:
+    appid: wxac7f9d77b338a9df
+    secret: 61351f9e81cceef7fb588cfa2d5e5cb9
 
 cloudflare:
   r2:

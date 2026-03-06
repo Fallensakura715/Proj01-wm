@@ -17,17 +17,19 @@ public class JwtUtils {
     }
 
     /**
-     * 根据员工ID生成JwtToken
-     * @param employeeId
-     * @return JwtToken
+     * 生成JWT Token
+     * @param claims
+     * @param subject
+     * @param secretKey
+     * @param expirationTime
+     * @return
      */
-    public static String generateToken(Long employeeId, String secretKey, Long expirationTime) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("employeeId", employeeId);
-
+    public static String generateToken(Map<String, Object> claims,
+                                       String subject, String secretKey,
+                                       Long expirationTime) {
         return Jwts.builder()
                 .claims(claims)
-                .subject("employee_auth")
+                .subject(subject)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(getSecretKey(secretKey), Jwts.SIG.HS256)
