@@ -2,6 +2,8 @@ package com.fallensakura.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fallensakura.constant.JwtClaimsConstant;
+import com.fallensakura.context.BaseContext;
+import com.fallensakura.dto.UserLoginDTO;
 import com.fallensakura.entity.User;
 import com.fallensakura.exception.BusinessException;
 import com.fallensakura.mapper.UserMapper;
@@ -15,10 +17,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -33,17 +37,18 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private static final String WX_LOGIN_URL = "https://api.weixin.qq.com/sns/jscode2session";
+    private static final String USER_LOGIN_TOKEN_PREFIX = "user:login:token:";
+
+    private final RedisTemplate<Object, Object> redisTemplate;
     private final JwtProperties jwtProperties;
     private final WechatProperties wechatProperties;
-
-    public static final String WX_LOGIN_URL = "https://api.weixin.qq.com/sns/jscode2session";
-
     private final UserMapper userMapper;
 
     @Override
-    public UserLoginVO login(String wechatToken) {
+    public UserLoginVO login(UserLoginDTO userLoginDTO) {
 
-        User user = new User();
+        User user = wxLogin(userLoginDTO.getCode());
 
         Map<String, Object> claims = new HashMap<>();
         claims.put(JwtClaimsConstant.USER_ID, user.getId());
@@ -55,6 +60,13 @@ public class UserServiceImpl implements UserService {
                 jwtProperties.getUserExpirationTime()
         );
 
+        redisTemplate.opsForValue().set(
+                USER_LOGIN_TOKEN_PREFIX + user.getId(),
+                token,
+                jwtProperties.getUserExpirationTime(),
+                TimeUnit.MILLISECONDS
+        );
+
         return UserLoginVO.builder()
                 .id(user.getId())
                 .openid(user.getOpenid())
@@ -64,7 +76,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout() {
-
+        Long userId = BaseContext.getCurrentId();
+        if (userId != null) {
+            redisTemplate.delete(USER_LOGIN_TOKEN_PREFIX + userId);
+        }
     }
 
     private User wxLogin(String wechatToken) {

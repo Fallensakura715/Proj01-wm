@@ -1,7 +1,9 @@
 package com.fallensakura.config;
 
 import com.fallensakura.interceptor.JwtTokenAdminInterceptor;
+import com.fallensakura.interceptor.JwtTokenUserInterceptor;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
@@ -15,10 +17,11 @@ import java.util.TimeZone;
 
 @Configuration
 @Slf4j
+@RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    @Autowired
-    JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
+    private final JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
+    private final JwtTokenUserInterceptor jwtTokenUserInterceptor;
 
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
@@ -26,15 +29,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtTokenAdminInterceptor)
                 .addPathPatterns("/admin/**")
-                .addPathPatterns("/user/**")
                 .excludePathPatterns(
-                        "/admin/employee/login",
-                        "/user/user/login"
-                )
-                .excludePathPatterns(
-                        "/user/**",
-                        "/user/user/login",
-                        "/user/shop/status"
+                        "/admin/employee/login"
                 )
                 .excludePathPatterns(
                         "/v3/**",
@@ -42,6 +38,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/swagger-ui.html",
                         "/swagger-resources/**",
                         "/webjars/**"
+                );
+
+        registry.addInterceptor(jwtTokenUserInterceptor)
+                .addPathPatterns("/user/**")
+                .excludePathPatterns(
+                        "/user/user/login",
+                        "/user/shop/status"
                 );
     }
 

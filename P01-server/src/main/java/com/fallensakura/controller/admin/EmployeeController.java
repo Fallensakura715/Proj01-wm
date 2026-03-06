@@ -17,11 +17,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/admin/employee")
@@ -30,8 +30,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class EmployeeController {
 
+    private static final String ADMIN_LOGIN_TOKEN_PREFIX = "admin:login:token:";
+
     private final EmployeeService employeeService;
     private final JwtProperties jwtProperties;
+    private final RedisTemplate<Object, Object> redisTemplate;
 
     @PostMapping("/login")
     @Operation(summary = "员工登录")
@@ -43,6 +46,13 @@ public class EmployeeController {
                 "employee_auth",
                 jwtProperties.getAdminSecretKey(),
                 jwtProperties.getExpirationTime()
+        );
+
+        redisTemplate.opsForValue().set(
+                ADMIN_LOGIN_TOKEN_PREFIX + employee.getId(),
+                token,
+                jwtProperties.getExpirationTime(),
+                TimeUnit.MILLISECONDS
         );
 
         EmployeeLoginVO vo = EmployeeLoginVO.builder()
@@ -57,7 +67,10 @@ public class EmployeeController {
     @PostMapping("/logout")
     @Operation(summary = "员工登出")
     public Result<String> logout() {
-        BaseContext.clear();
+        Long employeeId = BaseContext.getCurrentId();
+        if (employeeId != null) {
+            redisTemplate.delete(ADMIN_LOGIN_TOKEN_PREFIX + employeeId);
+        }
         return Result.success();
     }
 

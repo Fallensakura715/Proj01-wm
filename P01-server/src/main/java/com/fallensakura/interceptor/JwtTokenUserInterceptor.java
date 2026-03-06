@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
@@ -18,7 +19,10 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @RequiredArgsConstructor
 public class JwtTokenUserInterceptor implements HandlerInterceptor {
 
+    private static final String USER_LOGIN_TOKEN_PREFIX = "user:login:token:";
+
     private final JwtProperties jwtProperties;
+    private final RedisTemplate<Object, Object> redisTemplate;
 
     @Override
     public boolean preHandle(HttpServletRequest request,
@@ -30,17 +34,22 @@ public class JwtTokenUserInterceptor implements HandlerInterceptor {
 
         String token = request.getHeader(jwtProperties.getUserTokenName());
 
-        if (!StringUtils.hasText(token) || !token.startsWith("Bearer ")) {
+        if (!StringUtils.hasText(token)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }
-
-        token = token.substring(7);
 
         try {
             log.info("Parsing User JWT Token...");
             Long userId = JwtUtils.parseToken(token, jwtProperties.getUserSecretKey())
                     .get(JwtClaimsConstant.USER_ID, Long.class);
+
+            Object cacheToken = redisTemplate.opsForValue().get(USER_LOGIN_TOKEN_PREFIX + userId);
+            if (cacheToken == null || !token.equals(cacheToken.toString())) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return false;
+            }
+
             BaseContext.setCurrentId(userId);
             return true;
         } catch (Exception e) {

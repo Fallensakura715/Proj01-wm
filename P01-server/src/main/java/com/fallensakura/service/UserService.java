@@ -1,5 +1,6 @@
 package com.fallensakura.service;
 
+import com.fallensakura.dto.UserLoginDTO;
 import com.fallensakura.vo.UserLoginVO;
 
 /**
@@ -14,9 +15,9 @@ public interface UserService {
 
     /**
      * 登录
-     * @param wechatToken
+     * @param userLoginDTO
      */
-    UserLoginVO login(String wechatToken);
+    UserLoginVO login(UserLoginDTO userLoginDTO);
 
     /**
      * 登出
