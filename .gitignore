@@ -32,6 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-CLAUDE.md
-
-./P01-server/src/main/resources/application-dev.yaml
+/P01-server/src/main/resources/application-dev.yaml
