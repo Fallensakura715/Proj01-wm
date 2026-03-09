@@ -35,12 +35,12 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
 
         String token = request.getHeader(jwtProperties.getAdminTokenName());
 
-        if (!StringUtils.hasText(token) || !token.startsWith("Bearer ")) {
+        if (!StringUtils.hasText(token)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }
 
-        token = token.substring(7);
+//        token = token.substring(7);
 
         try {
             log.info("Parsing JWT Token...");
