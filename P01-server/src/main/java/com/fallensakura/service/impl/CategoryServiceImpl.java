@@ -2,6 +2,7 @@ package com.fallensakura.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fallensakura.constant.StatusConstant;
 import com.fallensakura.dto.CategoryDTO;
 import com.fallensakura.dto.CategoryPageQueryDTO;
 import com.fallensakura.entity.Category;
@@ -92,7 +93,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> selectByType(Integer type) {
-        return categoryMapper.selectByType(type);
+
+        if (type == null) return categoryMapper.selectList(new LambdaQueryWrapper<Category>()
+                .eq(Category::getStatus, StatusConstant.ENABLE));
+
+        return categoryMapper.selectList(new LambdaQueryWrapper<Category>()
+                .eq(Category::getStatus, StatusConstant.ENABLE)
+                .eq(Category::getType, type));
     }
 
 }
