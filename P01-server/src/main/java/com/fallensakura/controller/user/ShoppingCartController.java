@@ -42,7 +42,7 @@ public class ShoppingCartController {
 
     @PostMapping("/add")
     @Operation(summary = "添加购物车")
-    public Result<?> add(ShoppingCartDTO dto) {
+    public Result<?> add(@RequestBody ShoppingCartDTO dto) {
         shoppingCartService.add(dto);
         return Result.success();
     }
