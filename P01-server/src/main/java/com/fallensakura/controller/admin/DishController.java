@@ -54,7 +54,7 @@ public class DishController {
         return Result.success();
     }
 
-    @GetMapping("/dish/{id}")
+    @GetMapping("/{id}")
     @Operation(summary = "根据ID查询菜品")
     public Result<DishVO> selectById(@PathVariable Long id) {
         return Result.success(dishService.selectById(id));

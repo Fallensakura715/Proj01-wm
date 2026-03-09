@@ -2,6 +2,7 @@ package com.fallensakura.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fallensakura.constant.StatusConstant;
 import com.fallensakura.dto.DishDTO;
 import com.fallensakura.dto.DishPageQueryDTO;
 import com.fallensakura.dto.FlavorDTO;
@@ -39,12 +40,15 @@ public class DishServiceImpl implements DishService {
     private final DishFlavorMapper dishFlavorMapper;
     private final FlavorMapper flavorMapper;
     private final CategoryMapper categoryMapper;
-    private final SetmealMapper setmealMapper;
     private final SetmealDishMapper setmealDishMapper;
 
     @Transactional
     @Override
     public void update(DishDTO dto) {
+        if (dto.getId() == null) {
+            throw new BusinessException("菜品ID不能为空");
+        }
+
         Dish dish = new Dish();
         BeanUtils.copyProperties(dto, dish);
         dishMapper.update(dish);
@@ -59,12 +63,20 @@ public class DishServiceImpl implements DishService {
             for (FlavorDTO flavorDTO : flavors) {
                 Long flavorId = flavorDTO.getId();
                 if (flavorId == null) {
-                    Flavor newFlavor = Flavor.builder()
-                            .name(flavorDTO.getName())
-                            .value(flavorDTO.getValue())
-                            .build();
-                    flavorMapper.insert(newFlavor);
-                    flavorId = newFlavor.getId();
+                    Flavor flavor = flavorMapper.selectOne(
+                            new LambdaQueryWrapper<Flavor>()
+                                    .eq(Flavor::getName, flavorDTO.getName())
+                    );
+                    if (flavor == null) {
+                        Flavor newFlavor = Flavor.builder()
+                                .name(flavorDTO.getName())
+                                .value(flavorDTO.getValue())
+                                .build();
+                        flavorMapper.insert(newFlavor);
+                        flavorId = newFlavor.getId();
+                    } else {
+                        flavorId = flavor.getId();
+                    }
                 }
 
                 relations.add(DishFlavor.builder()
@@ -96,6 +108,39 @@ public class DishServiceImpl implements DishService {
         Dish dish = new Dish();
         BeanUtils.copyProperties(dto, dish);
         dishMapper.insert(dish);
+
+        List<FlavorDTO> flavors = dto.getFlavors();
+        if (flavors == null || flavors.isEmpty()) {
+            return;
+        }
+
+        List<DishFlavor> relations = new ArrayList<>();
+        for (FlavorDTO flavorDTO : flavors) {
+            Long flavorId = flavorDTO.getId();
+            if (flavorId == null) {
+                Flavor flavor = flavorMapper.selectOne(
+                        new LambdaQueryWrapper<Flavor>()
+                                .eq(Flavor::getName, flavorDTO.getName())
+                );
+                if (flavor == null) {
+                    Flavor newFlavor = Flavor.builder()
+                            .name(flavorDTO.getName())
+                            .value(flavorDTO.getValue())
+                            .build();
+                    flavorMapper.insert(newFlavor);
+                    flavorId = newFlavor.getId();
+                } else {
+                    flavorId = flavor.getId();
+                }
+            }
+
+            relations.add(DishFlavor.builder()
+                            .dishId(dish.getId())
+                            .flavorId(flavorId)
+                    .build());
+        }
+
+        dishFlavorMapper.insertBatch(relations);
     }
 
     @Override
@@ -120,7 +165,14 @@ public class DishServiceImpl implements DishService {
     @Override
     public List<Dish> selectByCategoryId(Long categoryId) {
         LambdaQueryWrapper<Dish> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Dish::getCategoryId, categoryId);
+
+        if (categoryId == null) {
+            wrapper.eq(Dish::getStatus, StatusConstant.ENABLE);
+        } else {
+            wrapper.eq(Dish::getStatus, StatusConstant.ENABLE)
+                    .eq(Dish::getCategoryId, categoryId);
+        }
+
         return dishMapper.selectList(wrapper);
     }
 

@@ -23,7 +23,7 @@ public class DishController {
 
     @GetMapping("/list")
     @Operation(summary = "根据分类id查询菜品")
-    public Result<List<Dish>> getDishedByCategoryId(@RequestParam Long id) {
+    public Result<List<Dish>> getDishedByCategoryId(@RequestParam(required = false) Long id) {
         return Result.success(dishService.selectByCategoryId(id));
     }
 }
