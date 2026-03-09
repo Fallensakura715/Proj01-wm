@@ -2,6 +2,7 @@ package com.fallensakura.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @Accessors(chain = true)
+@TableName("`order`")
 @Schema(name = "Order", description = "")
 public class Order implements Serializable {
 
