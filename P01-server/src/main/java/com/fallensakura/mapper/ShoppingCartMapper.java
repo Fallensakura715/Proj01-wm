@@ -1,5 +1,7 @@
 package com.fallensakura.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.fallensakura.entity.ShoppingCart;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,6 +13,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2025-10-16
  */
 @Mapper
-public interface ShoppingCartMapper {
+public interface ShoppingCartMapper extends BaseMapper<ShoppingCart> {
 
 }
