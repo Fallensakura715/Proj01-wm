@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: optional:file:.env
   application:
     name: P01-server
   datasource:
@@ -28,22 +30,22 @@ mybatis-plus:
 
 fallensakura:
   jwt:
-    admin-secret-key: this_is_fallensakura's_secret_key
-    admin-token-name: token
-    expiration-time: 7200000
-    user-expiration-time: 7200000
-    user-secret-key: this_is_fallensakura's_secret_key
-    user-token-name: authentication
+    admin-secret-key: ${ADMIN_SECRET_KEY}
+    admin-token-name: ${ADMIN_TOKEN_NAME}
+    expiration-time: ${JWT_EXPIRATION_TIME}
+    user-expiration-time: ${JWT_USER_EXPIRATION_TIME}
+    user-secret-key: ${USER_SECRET_KEY}
+    user-token-name: ${USER_TOKEN_NAME}
 
   wechat:
-    appid: wxac7f9d77b338a9df
-    secret: 61351f9e81cceef7fb588cfa2d5e5cb9
+    appid: ${WECHAT_APPID}
+    secret: ${WECHAT_SECRET}
 
 cloudflare:
   r2:
-    endpoint: https://72f9a9c523549dfdbaba24366870d8fa.r2.cloudflarestorage.com/
-    access-key: ac95cf16560abb9fcffdd6fec1a42e01
-    secret-key: cb17fbe36c17329e0337ccaef29b5c45a0ee273b36ef4e38992c63eb25aeb536
-    bucket-name: imagestorage
-    region: auto
-    public-url: https://imgu.falnsakura.top/
+    endpoint: ${CLOUDFLARE_R2_ENDPOINT}
+    access-key: ${CLOUDFLARE_R2_ACCESS_KEY}
+    secret-key: ${CLOUDFLARE_R2_SECRET_KEY}
+    bucket-name: ${CLOUDFLARE_R2_BUCKET_NAME}
+    region: ${CLOUDFLARE_R2_REGION:auto}
+    public-url: ${CLOUDFLARE_R2_PUBLIC_URL}

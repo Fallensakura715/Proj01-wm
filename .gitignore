@@ -33,3 +33,5 @@ build/
 .vscode/
 
 CLAUDE.md
+
+./P01-server/src/main/resources/application-dev.yaml
