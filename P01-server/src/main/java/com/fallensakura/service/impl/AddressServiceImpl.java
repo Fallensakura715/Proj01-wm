@@ -12,6 +12,7 @@ import com.fallensakura.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -39,6 +40,7 @@ public class AddressServiceImpl implements AddressService {
         return userId;
     }
 
+    @Transactional
     @Override
     public void addAddress(Address address) {
 
@@ -75,6 +77,7 @@ public class AddressServiceImpl implements AddressService {
                 .eq(Address::getIsDefault, 1));
     }
 
+    @Transactional
     @Override
     public void updateAddressById(Address address) {
 
@@ -96,6 +99,7 @@ public class AddressServiceImpl implements AddressService {
         addressMapper.updateById(address);
     }
 
+    @Transactional
     @Override
     public void deleteAddressById(Long id) {
         int rows = addressMapper.delete(
@@ -120,6 +124,7 @@ public class AddressServiceImpl implements AddressService {
         return address;
     }
 
+    @Transactional
     @Override
     public void setDefaultAddress(Long id) {
         if (id == null) {

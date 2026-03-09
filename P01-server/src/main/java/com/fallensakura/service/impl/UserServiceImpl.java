@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +46,7 @@ public class UserServiceImpl implements UserService {
     private final WechatProperties wechatProperties;
     private final UserMapper userMapper;
 
+    @Transactional
     @Override
     public UserLoginVO login(UserLoginDTO userLoginDTO) {
 

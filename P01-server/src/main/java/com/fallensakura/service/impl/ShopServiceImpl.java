@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import com.fallensakura.service.ShopService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -27,6 +28,7 @@ public class ShopServiceImpl implements ShopService {
         return (Integer) redisTemplate.opsForValue().get(STATUS);
     }
 
+    @Transactional
     @Override
     public void setStatus(Integer status) {
         redisTemplate.opsForValue().set(STATUS, status);
