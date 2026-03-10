@@ -3,8 +3,12 @@ package com.fallensakura.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fallensakura.context.BaseContext;
 import com.fallensakura.dto.ShoppingCartDTO;
+import com.fallensakura.entity.Dish;
+import com.fallensakura.entity.Setmeal;
 import com.fallensakura.entity.ShoppingCart;
 import com.fallensakura.exception.BusinessException;
+import com.fallensakura.mapper.DishMapper;
+import com.fallensakura.mapper.SetmealMapper;
 import com.fallensakura.mapper.ShoppingCartMapper;
 import com.fallensakura.service.ShoppingCartService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +33,8 @@ import java.util.List;
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     private final ShoppingCartMapper shoppingCartMapper;
+    private final DishMapper dishMapper;
+    private final SetmealMapper setmealMapper;
 
     private Long getUserId() {
         Long currentId = BaseContext.getCurrentId();
@@ -73,6 +79,27 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return wrapper;
     }
 
+    private void fillCartItemInfo(ShoppingCart shoppingCart, ShoppingCartDTO dto) {
+        if (dto.getDishId() != null) {
+            Dish dish = dishMapper.selectById(dto.getDishId());
+            if (dish == null) {
+                throw new BusinessException("菜品不存在");
+            }
+            shoppingCart.setImage(dish.getImage());
+            shoppingCart.setName(dish.getName());
+            shoppingCart.setAmount(dish.getPrice());
+            return;
+        }
+
+        Setmeal setmeal = setmealMapper.selectById(dto.getSetmealId());
+        if (setmeal == null) {
+            throw new BusinessException("套餐不存在");
+        }
+        shoppingCart.setImage(setmeal.getImage());
+        shoppingCart.setName(setmeal.getName());
+        shoppingCart.setAmount(setmeal.getPrice());
+    }
+
     @Transactional
     @Override
     public void deleteOne(ShoppingCartDTO dto) {
@@ -105,11 +132,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void add(ShoppingCartDTO dto) {
         LambdaQueryWrapper<ShoppingCart> wrapper = buildWrapper(dto, getUserId());
 
-
         ShoppingCart cart = shoppingCartMapper.selectOne(wrapper);
+
         if (cart != null) {
             Integer number = cart.getNumber() == null ? 0 : cart.getNumber();
             cart.setNumber(number + 1);
+
+            fillCartItemInfo(cart, dto);
+
             shoppingCartMapper.updateById(cart);
             return;
         }
@@ -122,6 +152,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .setSetmealId(dto.getSetmealId())
                 .setUserId(getUserId())
                 .setNumber(1);
+
+        fillCartItemInfo(shoppingCart, dto);
 
         shoppingCartMapper.insert(shoppingCart);
     }
