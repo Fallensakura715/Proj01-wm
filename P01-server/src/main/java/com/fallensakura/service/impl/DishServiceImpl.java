@@ -15,6 +15,9 @@ import com.fallensakura.vo.DishVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +45,11 @@ public class DishServiceImpl implements DishService {
     private final CategoryMapper categoryMapper;
     private final SetmealDishMapper setmealDishMapper;
 
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "dishByIdCache", key = "#dto.id"),
+            @CacheEvict(cacheNames = "dishListCache", allEntries = true),
+            @CacheEvict(cacheNames = "setmealDishCache", allEntries = true)
+    })
     @Transactional
     @Override
     public void update(DishDTO dto) {
@@ -89,6 +97,11 @@ public class DishServiceImpl implements DishService {
         }
     }
 
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "dishByIdCache", allEntries = true),
+            @CacheEvict(cacheNames = "dishListCache", allEntries = true),
+            @CacheEvict(cacheNames = "setmealDishCache", allEntries = true)
+    })
     @Transactional
     @Override
     public void deleteByIds(String ids) {
@@ -102,6 +115,7 @@ public class DishServiceImpl implements DishService {
         }
     }
 
+    @CacheEvict(cacheNames = "dishListCache", allEntries = true)
     @Transactional
     @Override
     public void addDish(DishDTO dto) {
@@ -143,6 +157,7 @@ public class DishServiceImpl implements DishService {
         dishFlavorMapper.insertBatch(relations);
     }
 
+    @Cacheable(cacheNames = "dishByIdCache", key = "#id")
     @Override
     public DishVO selectById(Long id) {
         Dish dish = dishMapper.selectById(id);
@@ -162,6 +177,7 @@ public class DishServiceImpl implements DishService {
         return vo;
     }
 
+    @Cacheable(cacheNames = "dishListCache", key = "#categoryId == null ? 'all' : #categoryId")
     @Override
     public List<Dish> selectByCategoryId(Long categoryId) {
         LambdaQueryWrapper<Dish> wrapper = new LambdaQueryWrapper<>();
@@ -183,6 +199,11 @@ public class DishServiceImpl implements DishService {
         return new PageResult<>(result.getTotal(), result.getRecords());
     }
 
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "dishByIdCache", key = "#id"),
+            @CacheEvict(cacheNames = "dishListCache", allEntries = true),
+            @CacheEvict(cacheNames = "setmealDishCache", allEntries = true)
+    })
     @Transactional
     @Override
     public void updateStatus(Integer status, Long id) {
@@ -193,6 +214,7 @@ public class DishServiceImpl implements DishService {
         dishMapper.update(dish);
     }
 
+    @Cacheable(cacheNames = "setmealDishCache", key = "#setmealId")
     @Override
     public List<Dish> selectBySetmealId(Long setmealId) {
         List<Long> dishIds = setmealDishMapper.selectList(
